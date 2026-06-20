@@ -84,8 +84,11 @@ from two JSON files. If present in the working directory, they are used automati
   editorial summaries of named companies, so each user supplies their own.
 
 Set `EB5_RC_DATA` / `EB5_WEBSITE_DATA` env vars to point elsewhere, or pass paths to
-`scripts/rc_lookup.ps1`. If a file is not found, the plugin falls back to fetching the
-current USCIS regional-center list at runtime (and notes the data gap in the report).
+`scripts/rc_lookup.ps1`. If a regional center is **not** in the bundled snapshot, the
+`uscis-rc-resolver` agent looks it up on the **live USCIS Approved (and Terminated) Regional
+Center lists** at runtime, and the match is cached to a self-healing overlay
+(`rc_data.local.json`, gitignored) that the lookup merges on later runs — so a missing RC is
+resolved once and reused. The bundled `rc_data.json` snapshot is never modified.
 
 > ⚠️ **Freshness disclaimer.** The bundled `rc_data.json` is a **point-in-time snapshot
 > (June 2026)** of the USCIS Approved Regional Centers list. USCIS adds, amends, and

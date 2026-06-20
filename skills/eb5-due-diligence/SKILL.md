@@ -37,8 +37,17 @@ which inputs were provided in `project.inputs_provided`.
    `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/rc_lookup.ps1 -Name "<name>"`
    (it auto-finds `rc_data.json` / `website_results.json` in the working dir, or set
    `EB5_RC_DATA` / `EB5_WEBSITE_DATA`). Capture the matched RC id, state, website, profile.
-3. If no local data is found OR no confident match, fall back to confirming the RC against the live
-   **USCIS approved regional center list** via WebSearch/WebFetch, and record a data gap.
+3. **If `matched` is null OR `rc_data_found` is false**, spawn the **`uscis-rc-resolver`** agent with
+   the name and the `rc_lookup.ps1` output. It resolves the RC against the **live USCIS Approved (and
+   Terminated) Regional Center lists** and returns the official name, RC id, state and standing.
+   - Use its result to seed the investigation (RC id / state). A `standing:"terminated"` →
+     confirmed-after-2nd-source is hard gate **G1**; if it is `found:false`, treat RC existence as
+     UNVERIFIABLE and record a major data gap.
+   - **Cache it so it is reused:** if the resolver returns a `cache` record, persist it with
+     `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/rc_append.ps1 -Name "<name>" -Id "<id>" -State "<state>"`
+     (writes to `rc_data.local.json`, which `rc_lookup.ps1` merges on the next run; the bundled
+     `rc_data.json` is never modified). Record the runtime resolution (and any unread primary source)
+     as a data gap.
 
 ### Phase 1 — Claim extraction (build the question list, not the answer key)
 - If PDFs were provided, read them (use Read; for large/binary PDFs, extract text first). Parse every
