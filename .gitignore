@@ -10,6 +10,9 @@
 # website_results.json is user-supplied (it carries scraped ratings/reviews and
 # editorial details about named companies) and is intentionally NOT committed.
 /website_results.json
+# rc_data.local.json is the runtime self-healing overlay (RCs resolved from the live
+# USCIS list by uscis-rc-resolver + rc_append.ps1). Machine-local cache, not committed.
+/rc_data.local.json
 
 # OS / editor cruft
 .DS_Store

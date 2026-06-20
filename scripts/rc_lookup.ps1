@@ -98,7 +98,24 @@ if (-not $rcPath) {
   return
 }
 
-$rcList = Get-Content -LiteralPath $rcPath -Raw | ConvertFrom-Json
+$rcList = @(Get-Content -LiteralPath $rcPath -Raw | ConvertFrom-Json)
+
+# Self-healing overlay: entries resolved from the live USCIS list at runtime are cached in
+# rc_data.local.json (next to rc_data.json or in the working dir) so later runs find them
+# locally. The bundled snapshot is never mutated. Deduped by Regional Center ID.
+$overlayPath = Resolve-DataPath -Explicit $null -EnvVar 'EB5_RC_DATA_LOCAL' -Defaults @(
+  'rc_data.local.json',
+  (Join-Path (Split-Path -Parent $rcPath) 'rc_data.local.json'),
+  (Join-Path $pluginRoot 'rc_data.local.json')
+)
+$result['overlay_path'] = $overlayPath
+if ($overlayPath) {
+  $existingIds = @{}; foreach ($rc in $rcList) { $existingIds[[string]$rc.'Regional Center ID'] = $true }
+  foreach ($rc in @(Get-Content -LiteralPath $overlayPath -Raw | ConvertFrom-Json)) {
+    if (-not $existingIds.ContainsKey([string]$rc.'Regional Center ID')) { $rcList += $rc }
+  }
+}
+
 $webList = @()
 $webById = @{}
 if ($webPath) {
