@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EB-5 due-diligence findings (one project)",
+  "description": "Full output of one /eb5-vet run. Consumed by scripts/render_report.ps1 to produce the HTML report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project", "scores", "verdict", "factors", "claims", "red_flags", "data_gaps", "checklist", "sources"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "generated_at": { "type": "string", "description": "ISO datetime the report was generated (stamped by the orchestrator/script)." },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "regional_center": { "type": "string" },
+        "regional_center_id": { "type": "string", "description": "USCIS RC ID, e.g. RC2200000751." },
+        "rc_state": { "type": "string" },
+        "rc_website": { "type": "string" },
+        "set_aside_category": { "type": "string", "enum": ["rural", "high-unemployment", "infrastructure", "unknown"] },
+        "amount_usd": { "type": "integer", "default": 800000 },
+        "inputs_provided": { "type": "array", "items": { "type": "string" }, "description": "e.g. ['ppm','website','name','rc_data.json']" }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["immigration", "financial"],
+      "properties": {
+        "immigration": { "$ref": "#/definitions/scoreBlock" },
+        "financial": { "$ref": "#/definitions/scoreBlock" },
+        "avg_confidence": { "type": "number", "minimum": 0, "maximum": 3, "description": "Overall average per-factor confidence across both scores." }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "rationale"],
+      "properties": {
+        "decision": { "type": "string", "enum": ["GO", "CONDITIONAL", "NO-GO"] },
+        "rationale": { "type": "string" },
+        "limited_by_data_gaps": { "type": "boolean", "default": false },
+        "hard_gates_triggered": { "type": "array", "items": { "type": "string" }, "description": "Gate ids from the rubric, e.g. ['G1']." },
+        "conditions_to_clear": { "type": "array", "items": { "type": "string" }, "description": "Required when decision is CONDITIONAL." }
+      }
+    },
+    "factors": {
+      "type": "array",
+      "description": "All 19 rubric factors (I1-I9, F1-F10) with computed values.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "weight", "subscore", "confidence"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "weight": { "type": "number" },
+          "subscore": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "confidence": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "summary": { "type": "string" },
+          "claim_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "claims": { "type": "array", "items": { "$ref": "claim.schema.json" } },
+    "red_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "title", "detail"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "title": { "type": "string" },
+          "detail": { "type": "string" },
+          "issuer_framing": { "type": "string", "description": "What the issuer says vs what was found." },
+          "factor": { "type": "string" },
+          "source_indices": { "type": "array", "items": { "type": "integer" }, "description": "1-based indices into sources[]." }
+        }
+      }
+    },
+    "data_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item", "why", "closes_with"],
+        "properties": {
+          "item": { "type": "string", "description": "What could not be verified." },
+          "why": { "type": "string", "description": "Why it could not be verified." },
+          "closes_with": { "type": "string", "description": "What document/source would close the gap." },
+          "factor": { "type": "string" }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "category": { "type": "string" },
+          "type": { "type": "string", "enum": ["auto", "manual"] },
+          "text": { "type": "string" },
+          "status": { "type": "string", "enum": ["pass", "fail", "unknown", "manual"] }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Deduplicated, numbered source list. Index+1 is the [n] marker used inline.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tier", "title", "url"],
+        "properties": {
+          "tier": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "title": { "type": "string" },
+          "url": { "type": "string" },
+          "accessed": { "type": "string" },
+          "is_issuer": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "scoreBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["composite", "weighted_base", "surcharge", "avg_confidence"],
+      "properties": {
+        "composite": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Final score 0 best .. 100 worst (weighted_base + surcharge, capped)." },
+        "weighted_base": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "surcharge": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "avg_confidence": { "type": "number", "minimum": 0, "maximum": 3 }
+      }
+    }
+  }
+}

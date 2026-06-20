@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#171b22; --panel2:#1d222b; --ink:#e8edf4; --muted:#9aa6b6;
+    --line:#2a313c; --accent:#5b9dff;
+    --go:#1f9d55; --cond:#d6a700; --nogo:#e0473e;
+    --t3:#1f9d55; --t2:#3a86ff; --t1:#d6a700; --t0:#8a93a3;
+    --verified:#1f9d55; --contra:#e0473e; --unver:#d6a700;
+    --crit:#e0473e; --high:#f08a24; --med:#d6a700; --low:#7d8794;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 22px 80px}
+  h1{font-size:25px;margin:0 0 4px} h2{font-size:19px;margin:34px 0 12px;
+    border-bottom:1px solid var(--line);padding-bottom:6px}
+  h3{font-size:15px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .sub{color:var(--muted);font-size:13.5px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+
+  /* verdict banner */
+  .banner{display:flex;flex-wrap:wrap;align-items:center;gap:22px;justify-content:space-between}
+  .chip{font-weight:800;font-size:22px;letter-spacing:.06em;padding:12px 22px;border-radius:10px;color:#fff}
+  .chip.GO{background:var(--go)} .chip.CONDITIONAL{background:var(--cond);color:#1a1a1a} .chip.NO-GO{background:var(--nogo)}
+  .gauges{display:flex;gap:26px;flex-wrap:wrap}
+  .gauge{min-width:150px}
+  .gauge .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .gauge .val{font-size:30px;font-weight:800;line-height:1}
+  .bar{height:9px;border-radius:6px;background:var(--panel2);overflow:hidden;margin-top:6px}
+  .bar > i{display:block;height:100%}
+  .conf{font-size:12px;color:var(--muted);margin-top:4px}
+  .warnbar{background:#3a2e12;border:1px solid #6a531c;color:#f3d486;border-radius:8px;
+    padding:10px 14px;margin:12px 0;font-size:13.5px}
+
+  /* badges */
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;
+    vertical-align:middle;white-space:nowrap}
+  .b-VERIFIED{background:rgba(31,157,85,.16);color:#5fd699;border:1px solid #2c6b48}
+  .b-CONTRADICTED{background:rgba(224,71,62,.16);color:#ff8a83;border:1px solid #7a322e}
+  .b-UNVERIFIABLE{background:rgba(214,167,0,.16);color:#f1cf63;border:1px solid #6a531c}
+  .pill{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:5px;color:#fff}
+  .t3{background:var(--t3)} .t2{background:var(--t2)} .t1{background:var(--t1);color:#1a1a1a} .t0{background:var(--t0)}
+  .sev{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  .sev.critical{background:var(--crit)} .sev.high{background:var(--high)}
+  .sev.medium{background:var(--med)} .sev.low{background:var(--low)}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .mini{font-size:12px;color:var(--muted)}
+
+  /* sub-score mini bar inside cells */
+  .sbar{display:inline-block;width:64px;height:7px;border-radius:4px;background:var(--panel2);overflow:hidden;vertical-align:middle;margin-right:8px}
+  .sbar > i{display:block;height:100%}
+
+  /* gate panel */
+  .gate{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;margin:6px 0;
+    background:var(--panel2);border:1px solid var(--line)}
+  .gate.fail{border-color:#7a322e;background:rgba(224,71,62,.08)}
+  .gate .mark{font-weight:800} .gate.pass .mark{color:var(--go)} .gate.fail .mark{color:var(--nogo)}
+
+  /* citation superscripts */
+  sup.cite a{font-size:11px;font-weight:700;color:var(--accent)}
+
+  /* accordions / filters */
+  .acc{border:1px solid var(--line);border-radius:8px;margin:8px 0;overflow:hidden}
+  .acc>summary{cursor:pointer;padding:10px 14px;background:var(--panel2);font-weight:600;list-style:none}
+  .acc>summary::-webkit-details-marker{display:none}
+  .acc>summary:before{content:"\25B8";margin-right:8px;color:var(--muted)}
+  .acc[open]>summary:before{content:"\25BE"}
+  .acc .body{padding:6px 14px 12px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .filters button{background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    border-radius:20px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* heatmap (compare) */
+  .heat td.cell{text-align:center;font-weight:700;color:#0d0f12;border:1px solid var(--bg)}
+  .best{outline:2px solid var(--go);outline-offset:-2px}
+
+  .check{list-style:none;padding:0;margin:0}
+  .check li{padding:6px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+  .check .st{font-weight:800;min-width:78px}
+  .st.pass{color:var(--go)} .st.fail{color:var(--nogo)} .st.unknown{color:var(--unver)} .st.manual{color:var(--muted)}
+
+  footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:12.5px}
+  @media print{body{background:#fff;color:#000}.panel{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+{{BODY}}
+<footer>
+  {{DISCLAIMER}}
+  <p class="mini">Generated {{GENERATED_AT}} by the <code>eb5-due-diligence</code> plugin. Scores are heuristic (0 = lowest risk, 100 = highest). This document is decision-support only and is not legal or financial advice.</p>
+</footer>
+</div>
+<script>
+// Verification-ledger filter
+function eb5Filter(btn, verdict){
+  var box = btn.closest('.ledger');
+  box.querySelectorAll('.filters button').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  box.querySelectorAll('tr[data-verdict]').forEach(function(r){
+    r.style.display = (verdict==='ALL'||r.getAttribute('data-verdict')===verdict)?'':'none';
+  });
+}
+</script>
+</body>
+</html>

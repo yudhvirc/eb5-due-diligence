@@ -1,0 +1,77 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-06-19 10:00",
+  "project": {
+    "name": "Sunset Tower Resort (Project B)",
+    "regional_center": "Example Coastal Regional Center LLC",
+    "regional_center_id": "RC2200009999",
+    "rc_state": "Florida",
+    "set_aside_category": "rural",
+    "amount_usd": 800000,
+    "inputs_provided": ["name", "website"]
+  },
+  "scores": {
+    "immigration": { "composite": 78, "weighted_base": 66, "surcharge": 12, "avg_confidence": 0.9 },
+    "financial": { "composite": 71, "weighted_base": 61, "surcharge": 10, "avg_confidence": 1.2 },
+    "avg_confidence": 1.05
+  },
+  "verdict": {
+    "decision": "NO-GO",
+    "rationale": "Hard gate triggered: the project's rural set-aside could not be reproduced and appears invalid, and a contradicted material claim about job creation was confirmed by a second source. Both scores are high and weakly evidenced.",
+    "limited_by_data_gaps": true,
+    "hard_gates_triggered": ["G4", "G5"],
+    "conditions_to_clear": []
+  },
+  "factors": [
+    { "id": "I1", "name": "Regional Center good standing", "weight": 16, "subscore": 40, "confidence": 1, "summary": "Found on a list but with a prior compliance notice.", "claim_ids": [] },
+    { "id": "I2", "name": "I-956F project approval status", "weight": 15, "subscore": 60, "confidence": 1, "summary": "I-956F reportedly filed; status not independently confirmed.", "claim_ids": [] },
+    { "id": "I3", "name": "Job-creation methodology & cushion", "weight": 14, "subscore": 85, "confidence": 2, "summary": "Claimed cushion contradicted; jobs rely on aggressive expenditure assumptions.", "claim_ids": ["I3-jobs"] },
+    { "id": "I4", "name": "TEA / set-aside qualification validity", "weight": 14, "subscore": 100, "confidence": 3, "summary": "Rural set-aside not reproducible — location sits inside an MSA per Census data.", "claim_ids": ["I4-rural"] },
+    { "id": "I5", "name": "Sustainment / at-risk 2-yr rule", "weight": 10, "subscore": 60, "confidence": 0, "summary": "Early-redemption feature may break 'at risk'.", "claim_ids": [] },
+    { "id": "I6", "name": "Redeployment terms", "weight": 8, "subscore": 65, "confidence": 0, "summary": "Open-ended redeployment language.", "claim_ids": [] },
+    { "id": "I7", "name": "I-526E / I-829 approval track record", "weight": 9, "subscore": 70, "confidence": 1, "summary": "No prior I-829 approvals located.", "claim_ids": [] },
+    { "id": "I8", "name": "RIA compliance: fund admin, audits, securities", "weight": 9, "subscore": 70, "confidence": 1, "summary": "No independent fund administrator identified.", "claim_ids": [] },
+    { "id": "I9", "name": "Source-of-funds independence", "weight": 5, "subscore": 50, "confidence": 0, "summary": "SOF guidance unusually prescriptive.", "claim_ids": [] },
+    { "id": "F1", "name": "Capital-stack position & EB-5 %", "weight": 15, "subscore": 80, "confidence": 1, "summary": "EB-5 appears to be ~70% of the stack and the de-facto equity / first-loss tranche.", "claim_ids": ["F1-stack"] },
+    { "id": "F2", "name": "Loan vs equity model & terms", "weight": 8, "subscore": 70, "confidence": 1, "summary": "Subordinated equity with no defined exit.", "claim_ids": [] },
+    { "id": "F3", "name": "Collateral & guarantees", "weight": 11, "subscore": 75, "confidence": 0, "summary": "No recorded collateral; guarantor is an affiliated shell.", "claim_ids": [] },
+    { "id": "F4", "name": "Developer track record & balance sheet", "weight": 14, "subscore": 65, "confidence": 2, "summary": "Developer linked to a prior project default in court records.", "claim_ids": ["F4-default"] },
+    { "id": "F5", "name": "Construction / completion risk", "weight": 12, "subscore": 60, "confidence": 1, "summary": "Pre-entitlement; no permits located.", "claim_ids": [] },
+    { "id": "F6", "name": "Market / demand risk", "weight": 11, "subscore": 55, "confidence": 1, "summary": "Resort demand speculative; submarket oversupplied.", "claim_ids": [] },
+    { "id": "F7", "name": "Repayment / takeout source", "weight": 12, "subscore": 65, "confidence": 0, "summary": "No identified takeout.", "claim_ids": [] },
+    { "id": "F8", "name": "Escrow & redeployment (financial)", "weight": 6, "subscore": 55, "confidence": 0, "summary": "Funds released to sponsor on subscription.", "claim_ids": [] },
+    { "id": "F9", "name": "Fees & conflicts of interest", "weight": 6, "subscore": 60, "confidence": 1, "summary": "Heavy affiliate fee stacking and related-party lease.", "claim_ids": [] },
+    { "id": "F10", "name": "Return-of-capital / distribution history", "weight": 5, "subscore": 60, "confidence": 0, "summary": "No evidence of prior capital returns.", "claim_ids": [] }
+  ],
+  "claims": [
+    { "claim_id": "I4-rural", "claim_text": "The project qualifies for the rural set-aside.", "source_of_claim": "Website /eb5", "material": true, "verdict": "CONTRADICTED", "confidence": 3, "factor": "I4", "subscore": 100, "note": "Census data places the site within a Metropolitan Statistical Area; the rural claim is invalid.", "citations": [ { "tier": 3, "title": "U.S. Census Bureau MSA delineation", "url": "https://www.census.gov/programs-surveys/metro-micro.html", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "I3-jobs", "claim_text": "Each investor creates 11 qualifying jobs.", "source_of_claim": "Website", "material": true, "verdict": "CONTRADICTED", "confidence": 2, "factor": "I3", "subscore": 85, "note": "Independent recompute of the stated spend and multipliers yields well under 10 jobs/investor; confirmed by a second analyst source.", "citations": [ { "tier": 2, "title": "Independent economic recompute note", "url": "https://example-econ.test/recompute", "accessed": "2026-06-19", "is_issuer": false }, { "tier": 2, "title": "Second independent analyst confirmation", "url": "https://example-econ2.test/confirm", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F1-stack", "claim_text": "EB-5 is a minority slice of the capital stack.", "source_of_claim": "Website", "material": true, "verdict": "CONTRADICTED", "confidence": 1, "factor": "F1", "subscore": 80, "note": "Public financing summary suggests EB-5 is the dominant (~70%) first-loss tranche.", "citations": [ { "tier": 1, "title": "Press note on project financing", "url": "https://example-press.test/financing", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F4-default", "claim_text": "The developer has a flawless completion record.", "source_of_claim": "Website /about", "material": true, "verdict": "CONTRADICTED", "confidence": 2, "factor": "F4", "subscore": 65, "note": "A federal docket shows a prior project default/receivership involving the principal.", "citations": [ { "tier": 3, "title": "PACER docket — prior project receivership", "url": "https://pacer.uscourts.gov/", "accessed": "2026-06-19", "is_issuer": false } ] }
+  ],
+  "red_flags": [
+    { "severity": "critical", "title": "Rural set-aside invalid", "detail": "The site is within an MSA per Census data; the rural reserved-category basis for the $800K amount fails.", "issuer_framing": "Marketing claims a rural set-aside.", "factor": "I4", "source_indices": [1] },
+    { "severity": "critical", "title": "Job-creation shortfall (confirmed)", "detail": "Independent recompute and a second source show fewer than 10 jobs/investor.", "issuer_framing": "Website claims 11 jobs/investor.", "factor": "I3", "source_indices": [2] },
+    { "severity": "critical", "title": "Developer prior default", "detail": "Federal court records show a prior project receivership involving the principal.", "issuer_framing": "Website claims a flawless record.", "factor": "F4", "source_indices": [4] },
+    { "severity": "high", "title": "EB-5 is the first-loss tranche", "detail": "EB-5 appears to make up ~70% of the capital stack with no senior protection.", "issuer_framing": "Website implies EB-5 is a minority slice.", "factor": "F1", "source_indices": [3] }
+  ],
+  "data_gaps": [
+    { "item": "I-956F approval status", "why": "No USCIS notice or receipt located.", "closes_with": "The USCIS I-956F receipt/approval notice.", "factor": "I2" },
+    { "item": "Independent fund administrator", "why": "No fund-admin engagement found.", "closes_with": "An engagement letter from an independent fund administrator.", "factor": "I8" }
+  ],
+  "checklist": [
+    { "id": "C1", "category": "Immigration", "type": "auto", "text": "Regional center active and not terminated.", "status": "unknown" },
+    { "id": "C2", "category": "Immigration", "type": "auto", "text": "Project I-956F approved.", "status": "unknown" },
+    { "id": "C4", "category": "Immigration", "type": "auto", "text": "Reserved-category set-aside independently confirmed and valid.", "status": "fail" },
+    { "id": "C3", "category": "Immigration", "type": "auto", "text": "Job creation provides a meaningful cushion above 10/investor.", "status": "fail" },
+    { "id": "C13", "category": "Financial", "type": "auto", "text": "Developer track record checked; no undisclosed defaults.", "status": "fail" },
+    { "id": "C20", "category": "Independence", "type": "manual", "text": "Engage your own independent immigration attorney and financial advisor.", "status": "manual" }
+  ],
+  "sources": [
+    { "tier": 3, "title": "U.S. Census Bureau MSA delineation", "url": "https://www.census.gov/programs-surveys/metro-micro.html", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 2, "title": "Independent economic recompute note", "url": "https://example-econ.test/recompute", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 1, "title": "Press note on project financing", "url": "https://example-press.test/financing", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "PACER docket — prior project receivership", "url": "https://pacer.uscourts.gov/", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 0, "title": "Project marketing website", "url": "about:blank", "accessed": "2026-06-19", "is_issuer": true }
+  ]
+}

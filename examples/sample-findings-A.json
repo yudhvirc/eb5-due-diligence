@@ -1,0 +1,99 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-06-19 10:00",
+  "project": {
+    "name": "Riverside Logistics Hub (Project A)",
+    "regional_center": "Example Northeast Regional Center LLC",
+    "regional_center_id": "RC2300008888",
+    "rc_state": "New Jersey",
+    "rc_website": "https://example-rc.test/",
+    "set_aside_category": "high-unemployment",
+    "amount_usd": 800000,
+    "inputs_provided": ["name", "ppm", "rc_data.json"]
+  },
+  "scores": {
+    "immigration": { "composite": 34, "weighted_base": 30, "surcharge": 4, "avg_confidence": 2.0 },
+    "financial": { "composite": 52, "weighted_base": 44, "surcharge": 8, "avg_confidence": 1.0 },
+    "avg_confidence": 1.5
+  },
+  "verdict": {
+    "decision": "CONDITIONAL",
+    "rationale": "Immigration risk is low: the regional center is active and the I-956F is approved, with an independently confirmed high-unemployment set-aside. Financial risk is mid-band and weakly evidenced — the takeout/repayment source and developer balance sheet could not be independently confirmed, so an uncertainty surcharge applies.",
+    "limited_by_data_gaps": false,
+    "hard_gates_triggered": [],
+    "conditions_to_clear": [
+      "Obtain the committed takeout/refinance term sheet and confirm conservative LTV/DSCR (F7).",
+      "Obtain the developer's audited balance sheet and confirm no undisclosed defaults (F4).",
+      "Confirm first-lien collateral recording at the county recorder (F3)."
+    ]
+  },
+  "factors": [
+    { "id": "I1", "name": "Regional Center good standing", "weight": 16, "subscore": 10, "confidence": 3, "summary": "Active on the USCIS approved RC list; absent from the termination list.", "claim_ids": ["I1-active"] },
+    { "id": "I2", "name": "I-956F project approval status", "weight": 15, "subscore": 15, "confidence": 3, "summary": "I-956F approved per USCIS notice.", "claim_ids": ["I2-956f"] },
+    { "id": "I3", "name": "Job-creation methodology & cushion", "weight": 14, "subscore": 35, "confidence": 2, "summary": "~38% cushion above 10 jobs/investor; IMPLAN inputs plausible but partly construction-expenditure based.", "claim_ids": ["I3-cushion"] },
+    { "id": "I4", "name": "TEA / set-aside qualification validity", "weight": 14, "subscore": 20, "confidence": 3, "summary": "High-unemployment designation reproduced from BLS LAUS (>150% national avg).", "claim_ids": ["I4-tea"] },
+    { "id": "I5", "name": "Sustainment / at-risk 2-yr rule", "weight": 10, "subscore": 40, "confidence": 1, "summary": "PPM language consistent with 2-yr sustainment but deployment-timing evidence is issuer-only.", "claim_ids": [] },
+    { "id": "I6", "name": "Redeployment terms", "weight": 8, "subscore": 45, "confidence": 1, "summary": "Redeployment clause is same-RC but somewhat open-ended.", "claim_ids": [] },
+    { "id": "I7", "name": "I-526E / I-829 approval track record", "weight": 9, "subscore": 30, "confidence": 2, "summary": "Operator has prior I-829 approvals on earlier projects.", "claim_ids": ["I7-track"] },
+    { "id": "I8", "name": "RIA compliance: fund admin, audits, securities", "weight": 9, "subscore": 35, "confidence": 2, "summary": "Independent fund administrator engaged; Form D on EDGAR.", "claim_ids": ["I8-formd"] },
+    { "id": "I9", "name": "Source-of-funds independence", "weight": 5, "subscore": 30, "confidence": 1, "summary": "Standard SOF pathway; no sanctioned jurisdictions noted.", "claim_ids": [] },
+    { "id": "F1", "name": "Capital-stack position & EB-5 %", "weight": 15, "subscore": 45, "confidence": 2, "summary": "Senior debt ~55%, EB-5 ~28% (mezzanine), sponsor equity ~17%. EB-5 is subordinate but not first-loss.", "claim_ids": ["F1-stack"] },
+    { "id": "F2", "name": "Loan vs equity model & terms", "weight": 8, "subscore": 40, "confidence": 1, "summary": "EB-5 deployed as a mezzanine loan; terms only from PPM.", "claim_ids": [] },
+    { "id": "F3", "name": "Collateral & guarantees", "weight": 11, "subscore": 55, "confidence": 0, "summary": "Claimed second-lien collateral not confirmed at the county recorder.", "claim_ids": ["F3-collateral"] },
+    { "id": "F4", "name": "Developer track record & balance sheet", "weight": 14, "subscore": 50, "confidence": 1, "summary": "Two prior completions found in press; balance sheet not independently available.", "claim_ids": ["F4-track"] },
+    { "id": "F5", "name": "Construction / completion risk", "weight": 12, "subscore": 45, "confidence": 2, "summary": "Site permitted per municipal records; GC named but bonding unconfirmed.", "claim_ids": ["F5-permits"] },
+    { "id": "F6", "name": "Market / demand risk", "weight": 11, "subscore": 40, "confidence": 2, "summary": "Independent logistics-market data supports absorption in the submarket.", "claim_ids": ["F6-market"] },
+    { "id": "F7", "name": "Repayment / takeout source", "weight": 12, "subscore": 60, "confidence": 0, "summary": "Takeout described as 'future refinance'; no committed term sheet found.", "claim_ids": ["F7-takeout"] },
+    { "id": "F8", "name": "Escrow & redeployment (financial)", "weight": 6, "subscore": 35, "confidence": 1, "summary": "Funds escrowed to I-526E filing per PPM.", "claim_ids": [] },
+    { "id": "F9", "name": "Fees & conflicts of interest", "weight": 6, "subscore": 45, "confidence": 2, "summary": "Admin + management fees to affiliates; disclosed, roughly market.", "claim_ids": ["F9-fees"] },
+    { "id": "F10", "name": "Return-of-capital / distribution history", "weight": 5, "subscore": 40, "confidence": 1, "summary": "One prior project reportedly returned capital; not independently confirmed.", "claim_ids": [] }
+  ],
+  "claims": [
+    { "claim_id": "I1-active", "claim_text": "The regional center is in good standing with USCIS.", "source_of_claim": "PPM p.8", "material": true, "verdict": "VERIFIED", "confidence": 3, "factor": "I1", "subscore": 10, "note": "Listed on the USCIS approved RC list; not on the termination list.", "citations": [ { "tier": 3, "title": "USCIS Approved EB-5 Immigrant Investor Regional Centers", "url": "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-fifth-preference-eb-5/eb-5-immigrant-investor-regional-centers", "accessed": "2026-06-19", "quote": "Example Northeast Regional Center LLC", "is_issuer": false } ] },
+    { "claim_id": "I2-956f", "claim_text": "The project's I-956F has been approved.", "source_of_claim": "PPM cover", "material": true, "verdict": "VERIFIED", "confidence": 3, "factor": "I2", "subscore": 15, "note": "Approval confirmed via USCIS notice number.", "citations": [ { "tier": 3, "title": "USCIS I-956F approval notice", "url": "https://www.uscis.gov/i-956f", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "I4-tea", "claim_text": "The project sits in a qualifying high-unemployment area.", "source_of_claim": "TEA letter", "material": true, "verdict": "VERIFIED", "confidence": 3, "factor": "I4", "subscore": 20, "note": "Reproduced from BLS LAUS: tract unemployment exceeds 150% of the national average.", "citations": [ { "tier": 3, "title": "BLS Local Area Unemployment Statistics", "url": "https://www.bls.gov/lau/", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "I3-cushion", "claim_text": "Each investor will create ~13.8 qualifying jobs.", "source_of_claim": "Economic report p.20", "material": true, "verdict": "VERIFIED", "confidence": 2, "factor": "I3", "subscore": 35, "note": "Cushion ~38%; multipliers checked against published IMPLAN ranges for warehousing.", "citations": [ { "tier": 2, "title": "Trade-press coverage of comparable logistics EB-5 job models", "url": "https://example-tradepress.test/logistics-eb5", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "I7-track", "claim_text": "The operator has prior conditions-removal (I-829) approvals.", "source_of_claim": "PPM p.31", "material": false, "verdict": "VERIFIED", "confidence": 2, "factor": "I7", "subscore": 30, "citations": [ { "tier": 2, "title": "Industry tracker of operator I-829 outcomes", "url": "https://example-tracker.test/operator", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "I8-formd", "claim_text": "An independent fund administrator and audit are in place.", "source_of_claim": "PPM p.44", "material": false, "verdict": "VERIFIED", "confidence": 2, "factor": "I8", "subscore": 35, "citations": [ { "tier": 3, "title": "SEC EDGAR Form D filing", "url": "https://www.sec.gov/cgi-bin/browse-edgar", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F1-stack", "claim_text": "EB-5 is a 28% mezzanine slice behind 55% senior debt.", "source_of_claim": "PPM p.50", "material": true, "verdict": "VERIFIED", "confidence": 2, "factor": "F1", "subscore": 45, "note": "Senior loan corroborated by recorder data; EB-5 share consistent.", "citations": [ { "tier": 3, "title": "County recorder — recorded senior deed of trust", "url": "https://example-recorder.test/deed", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F3-collateral", "claim_text": "EB-5 loan is secured by a recorded second lien.", "source_of_claim": "PPM p.52", "material": true, "verdict": "UNVERIFIABLE", "confidence": 0, "factor": "F3", "subscore": 55, "note": "No second-lien instrument located in county records as of the report date.", "citations": [] },
+    { "claim_id": "F4-track", "claim_text": "The developer has completed numerous similar projects.", "source_of_claim": "PPM p.28", "material": true, "verdict": "VERIFIED", "confidence": 1, "factor": "F4", "subscore": 50, "note": "Two prior completions confirmed in local press; full history and balance sheet not available.", "citations": [ { "tier": 1, "title": "Local business journal mention of two prior projects", "url": "https://example-journal.test/developer", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F5-permits", "claim_text": "The project is fully permitted.", "source_of_claim": "Business plan p.12", "material": true, "verdict": "VERIFIED", "confidence": 2, "factor": "F5", "subscore": 45, "citations": [ { "tier": 3, "title": "Municipal building-permit record", "url": "https://example-city.test/permits", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F6-market", "claim_text": "Strong demand for logistics space in the submarket.", "source_of_claim": "Market study (issuer)", "material": false, "verdict": "VERIFIED", "confidence": 2, "factor": "F6", "citations": [ { "tier": 2, "title": "Independent regional logistics absorption report", "url": "https://example-cre.test/logistics", "accessed": "2026-06-19", "is_issuer": false } ] },
+    { "claim_id": "F7-takeout", "claim_text": "The loan will be repaid via refinance at stabilization.", "source_of_claim": "PPM p.55", "material": true, "verdict": "UNVERIFIABLE", "confidence": 0, "factor": "F7", "subscore": 60, "note": "No committed takeout term sheet; repayment depends on a future refinance under unstated terms.", "citations": [] },
+    { "claim_id": "F9-fees", "claim_text": "Fees are market-standard and fully disclosed.", "source_of_claim": "PPM fee schedule", "material": false, "verdict": "VERIFIED", "confidence": 2, "factor": "F9", "note": "Admin and management fees flow to affiliates of the sponsor; disclosed and roughly market.", "citations": [ { "tier": 2, "title": "Comparative EB-5 fee benchmarking note", "url": "https://example-benchmark.test/fees", "accessed": "2026-06-19", "is_issuer": false } ] }
+  ],
+  "red_flags": [
+    { "severity": "high", "title": "No committed takeout for repayment", "detail": "Return of the $800,000 depends on a future refinance for which no term sheet, LTV, or DSCR could be found.", "issuer_framing": "PPM presents refinance at stabilization as routine; no committed financing exists.", "factor": "F7", "source_indices": [] },
+    { "severity": "medium", "title": "Second-lien collateral not recorded", "detail": "The claimed second-lien security for the EB-5 loan was not located in county records.", "issuer_framing": "PPM describes the loan as 'secured'; recording could not be confirmed.", "factor": "F3", "source_indices": [] },
+    { "severity": "low", "title": "Affiliate fee stacking", "detail": "Administrative and management fees flow to sponsor affiliates.", "issuer_framing": "Disclosed and roughly market, but a conflict to watch.", "factor": "F9", "source_indices": [] }
+  ],
+  "data_gaps": [
+    { "item": "Committed takeout / refinance terms", "why": "No term sheet or lender commitment is public; PPM relies on a future refinance.", "closes_with": "A signed takeout term sheet or refinance commitment with LTV/DSCR.", "factor": "F7" },
+    { "item": "Recorded second-lien collateral", "why": "No second-lien instrument found in county recorder data.", "closes_with": "The recorded deed of trust / UCC-1 evidencing the EB-5 lien.", "factor": "F3" },
+    { "item": "Developer audited balance sheet", "why": "Only press mentions of prior projects were found.", "closes_with": "Audited financial statements from an independent auditor.", "factor": "F4" }
+  ],
+  "checklist": [
+    { "id": "C1", "category": "Immigration", "type": "auto", "text": "Regional center active and not terminated on the USCIS list.", "status": "pass" },
+    { "id": "C2", "category": "Immigration", "type": "auto", "text": "Project I-956F approved.", "status": "pass" },
+    { "id": "C4", "category": "Immigration", "type": "auto", "text": "Reserved-category set-aside independently confirmed and valid.", "status": "pass" },
+    { "id": "C12", "category": "Financial", "type": "auto", "text": "Collateral recorded (first lien where claimed).", "status": "fail" },
+    { "id": "C13", "category": "Financial", "type": "auto", "text": "Developer track record / balance sheet checked; no undisclosed defaults.", "status": "unknown" },
+    { "id": "C16", "category": "Financial", "type": "manual", "text": "Identify and stress-test the repayment/takeout source.", "status": "manual" },
+    { "id": "C20", "category": "Independence", "type": "manual", "text": "Engage your own independent immigration attorney and financial advisor.", "status": "manual" }
+  ],
+  "sources": [
+    { "tier": 3, "title": "USCIS Approved EB-5 Regional Centers", "url": "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-fifth-preference-eb-5/eb-5-immigrant-investor-regional-centers", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "USCIS I-956F approval notice", "url": "https://www.uscis.gov/i-956f", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "BLS Local Area Unemployment Statistics", "url": "https://www.bls.gov/lau/", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 2, "title": "Trade-press coverage of comparable logistics EB-5 job models", "url": "https://example-tradepress.test/logistics-eb5", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 2, "title": "Industry tracker of operator I-829 outcomes", "url": "https://example-tracker.test/operator", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "SEC EDGAR Form D filing", "url": "https://www.sec.gov/cgi-bin/browse-edgar", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "County recorder — recorded senior deed of trust", "url": "https://example-recorder.test/deed", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 1, "title": "Local business journal mention of two prior projects", "url": "https://example-journal.test/developer", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 3, "title": "Municipal building-permit record", "url": "https://example-city.test/permits", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 2, "title": "Independent regional logistics absorption report", "url": "https://example-cre.test/logistics", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 2, "title": "Comparative EB-5 fee benchmarking note", "url": "https://example-benchmark.test/fees", "accessed": "2026-06-19", "is_issuer": false },
+    { "tier": 0, "title": "Project Private Placement Memorandum (PPM)", "url": "about:blank", "accessed": "2026-06-19", "is_issuer": true }
+  ]
+}

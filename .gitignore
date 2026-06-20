@@ -1,0 +1,17 @@
+# Runtime artifacts produced by /eb5-vet and /eb5-compare (keep examples/ checked in)
+/findings.json
+/*-eb5-report.html
+/eb5-report.html
+/eb5-compare.html
+/*.findings.json
+
+# Local data files.
+# rc_data.json (neutral USCIS name / state / RC-ID snapshot) IS checked in.
+# website_results.json is user-supplied (it carries scraped ratings/reviews and
+# editorial details about named companies) and is intentionally NOT committed.
+/website_results.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

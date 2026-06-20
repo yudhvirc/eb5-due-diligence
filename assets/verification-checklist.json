@@ -1,0 +1,27 @@
+{
+  "$schema_note": "Canonical pre-investment verification checklist. Rendered in the report. 'auto' items can be auto-checked when evidence exists in findings; 'manual' items are for the investor and their own independent counsel to confirm before wiring funds.",
+  "version": "0.1.0",
+  "items": [
+    { "id": "C1",  "category": "Immigration", "type": "auto",   "text": "Regional center is active and in good standing on the current USCIS approved RC list (and absent from the termination list).", "evidence_factor": "I1" },
+    { "id": "C2",  "category": "Immigration", "type": "auto",   "text": "Project's I-956F has been approved by USCIS (or, if pending, confirm the filing receipt and date).", "evidence_factor": "I2" },
+    { "id": "C3",  "category": "Immigration", "type": "auto",   "text": "Job-creation count provides a meaningful cushion above 10 jobs/investor, with a defensible economic methodology.", "evidence_factor": "I3" },
+    { "id": "C4",  "category": "Immigration", "type": "auto",   "text": "Reserved-category set-aside (rural / high-unemployment / infrastructure) is independently confirmed and currently valid.", "evidence_factor": "I4" },
+    { "id": "C5",  "category": "Immigration", "type": "manual", "text": "Confirm the 2-year sustainment / at-risk period and exactly when your capital is deemed deployed.", "evidence_factor": "I5" },
+    { "id": "C6",  "category": "Immigration", "type": "manual", "text": "Read the redeployment clause; confirm it is same-RC, NCE-consistent, and protective of investors.", "evidence_factor": "I6" },
+    { "id": "C7",  "category": "Immigration", "type": "auto",   "text": "Sponsor / RC has a prior I-829 (conditions removed) approval track record.", "evidence_factor": "I7" },
+    { "id": "C8",  "category": "Immigration", "type": "auto",   "text": "An independent fund administrator and annual audit are in place (RIA compliance), and I-956G is being filed.", "evidence_factor": "I8" },
+    { "id": "C9",  "category": "Immigration", "type": "manual", "text": "Your own source-of-funds path is fully documented and routed through non-sanctioned channels.", "evidence_factor": "I9" },
+    { "id": "C10", "category": "Financial",   "type": "auto",   "text": "Capital stack confirmed from independent records; EB-5 is not the first-loss tranche and not a majority of the stack.", "evidence_factor": "F1" },
+    { "id": "C11", "category": "Financial",   "type": "manual", "text": "Read the loan/equity terms: rate, maturity, security, and whether repayment is contractually defined.", "evidence_factor": "F2" },
+    { "id": "C12", "category": "Financial",   "type": "auto",   "text": "Collateral is recorded (first lien where claimed) and guarantees are from a creditworthy, independent guarantor.", "evidence_factor": "F3" },
+    { "id": "C13", "category": "Financial",   "type": "auto",   "text": "Developer track record and balance sheet checked against EDGAR/PACER/news; no undisclosed defaults or bankruptcies.", "evidence_factor": "F4" },
+    { "id": "C14", "category": "Financial",   "type": "auto",   "text": "Construction status verified (permits/entitlements, GC, contract type); completion risk understood.", "evidence_factor": "F5" },
+    { "id": "C15", "category": "Financial",   "type": "auto",   "text": "Market demand supported by an independent study, not just the issuer's projections.", "evidence_factor": "F6" },
+    { "id": "C16", "category": "Financial",   "type": "manual", "text": "Identify the repayment/takeout source and stress-test it (LTV, DSCR, refinance feasibility).", "evidence_factor": "F7" },
+    { "id": "C17", "category": "Financial",   "type": "manual", "text": "Read the escrow agreement: when are your funds released, and to whom?", "evidence_factor": "F8" },
+    { "id": "C18", "category": "Financial",   "type": "auto",   "text": "Fee schedule and related-party map reviewed for stacked/affiliate fees and self-dealing.", "evidence_factor": "F9" },
+    { "id": "C19", "category": "Financial",   "type": "auto",   "text": "Sponsor has a history of actually returning EB-5 capital on prior deals.", "evidence_factor": "F10" },
+    { "id": "C20", "category": "Independence", "type": "manual", "text": "Engage YOUR OWN immigration attorney and financial advisor — independent of the issuer and of the attorney who proposed the deal.", "evidence_factor": null },
+    { "id": "C21", "category": "Independence", "type": "manual", "text": "Resolve every UNVERIFIABLE claim in this report by obtaining the underlying primary document before wiring funds.", "evidence_factor": null }
+  ]
+}

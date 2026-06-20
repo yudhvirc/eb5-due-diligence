@@ -1,0 +1,59 @@
+{
+  "$schema_note": "Maps a source to a confidence tier 0-3. Use the HIGHEST matching tier. The issuer/attorney is never above tier 0 for its own claims.",
+  "version": "0.1.0",
+  "tiers": [
+    {
+      "tier": 3,
+      "label": "Primary government / court record",
+      "examples": [
+        "USCIS approved Regional Center list",
+        "USCIS Regional Center termination / debarment list",
+        "USCIS I-956F / I-956 / I-956G data or approval/denial notice",
+        "SEC EDGAR filings (S-1, D, litigation releases, AAERs)",
+        "SEC enforcement / litigation releases and orders",
+        "PACER / federal court dockets and judgments",
+        "State court records and judgments",
+        "U.S. Census Bureau ACS data (for TEA)",
+        "Bureau of Labor Statistics LAUS unemployment data (for TEA)",
+        "County recorder / register of deeds (liens, deeds, UCC filings)",
+        "Municipal building / permitting department records",
+        "OFAC / sanctions lists"
+      ]
+    },
+    {
+      "tier": 2,
+      "label": "Reputable independent third party",
+      "examples": [
+        "Established trade / financial press (e.g. national newspapers, recognized real-estate and immigration trade outlets)",
+        "Independent market-study and absorption data from a recognized firm",
+        "Third-party audited financial statements (auditor is independent of sponsor)",
+        "Independent fund administrator confirmations",
+        "Recognized EB-5 industry data services / litigation trackers",
+        "Ratings agencies and independent analysts"
+      ]
+    },
+    {
+      "tier": 1,
+      "label": "Single weak / uncorroborated third party",
+      "examples": [
+        "A single blog, forum post, or press release not from the issuer but uncorroborated",
+        "Aggregator listings with unknown provenance",
+        "Issuer claim that has exactly one weak corroborating signal",
+        "Marketing material from a partner/affiliate of the issuer"
+      ]
+    },
+    {
+      "tier": 0,
+      "label": "Issuer-only / none",
+      "examples": [
+        "The Private Placement Memorandum (PPM)",
+        "The I-526E exemplar provided by the issuer",
+        "The issuer's business plan or economic report (as a claim source)",
+        "The issuer's / regional center's marketing website and brochures",
+        "The immigration attorney's summary or recommendation",
+        "No source found at all"
+      ],
+      "note": "Anything here makes a claim UNVERIFIABLE unless an independent tier >= 2 source corroborates it."
+    }
+  ]
+}

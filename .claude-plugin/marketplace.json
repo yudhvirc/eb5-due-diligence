@@ -1,0 +1,13 @@
+{
+  "name": "eb5-due-diligence",
+  "owner": {
+    "name": "eb5-due-diligence"
+  },
+  "plugins": [
+    {
+      "name": "eb5-due-diligence",
+      "source": ".",
+      "description": "Exhaustive, independent due diligence on EB-5 immigrant-investor projects (reserved category / $800K): re-verifies every issuer/attorney claim against primary sources and produces a self-contained HTML report with Immigration and Financial Risk Scores, a Go/No-Go verdict, inline citations, and side-by-side comparison."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "$schema_note": "Single source of truth for EB-5 risk scoring. Read by skills/eb5-scoring/SKILL.md (to compute) and scripts/render_report.ps1 (to render). Scores are 0 = lowest risk (best) .. 100 = highest risk (worst).",
+  "version": "0.1.0",
+  "score_direction": "0_is_best_100_is_worst",
+  "confidence_scale": {
+    "3": "High — primary government or court record (USCIS RC list/termination, I-956F notice, SEC EDGAR filing, PACER docket).",
+    "2": "Medium — reputable independent third party (established trade press, independent market data, county recorder, third-party audited financials).",
+    "1": "Low — single uncorroborated weak third-party source, or issuer doc corroborated by one weak signal.",
+    "0": "None — only the issuer's own marketing/PPM, or nothing at all. Claim is UNVERIFIABLE."
+  },
+  "verdict_credit_rule": "A claim may only earn confidence >= 2 (and a non-penalized sub-score) if corroborated by a NON-ISSUER source of tier >= 2. The issuer corroborating itself does not count. Otherwise the claim is downgraded to UNVERIFIABLE (confidence 0).",
+  "immigration_factors": [
+    { "id": "I1", "weight": 16, "name": "Regional Center good standing", "good": "Active and in good standing on the USCIS approved RC list.", "bad": "On notice / non-compliant / terminated.", "primary_source": "USCIS approved RC list + termination list" },
+    { "id": "I2", "weight": 15, "name": "I-956F project approval status", "good": "Project I-956F approved.", "bad": "Not filed or denied.", "primary_source": "USCIS I-956F data / approval notice" },
+    { "id": "I3", "weight": 14, "name": "Job-creation methodology & cushion", "good": ">=30-50% job cushion above the 10-jobs-per-investor requirement with defensible RIMS-II/IMPLAN inputs.", "bad": "Thin/zero cushion, expenditure-only jobs, inflated multipliers.", "primary_source": "Economic report re-derived vs independent multipliers" },
+    { "id": "I4", "weight": 14, "name": "TEA / set-aside qualification validity", "good": "Rural / high-unemployment / infrastructure set-aside independently confirmed (Census/BLS/USCIS designation).", "bad": "Gerrymandered or expired designation, or unverifiable.", "primary_source": "Census ACS, BLS LAUS, USCIS TEA guidance" },
+    { "id": "I5", "weight": 10, "name": "Sustainment / at-risk 2-yr rule (RIA)", "good": "Capital deployed and sustained >=2 years from investment per RIA; clear at-risk structure.", "bad": "Ambiguous deployment timing or early-return features that break at-risk.", "primary_source": "PPM terms re-checked vs RIA; deployment evidence" },
+    { "id": "I6", "weight": 8, "name": "Redeployment terms", "good": "Same-RC, NCE-consistent, geographically permissible redeployment with investor protections.", "bad": "Open-ended, vague, or investor-adverse redeployment.", "primary_source": "PPM + USCIS redeployment policy" },
+    { "id": "I7", "weight": 9, "name": "I-526E / I-829 approval track record", "good": "RC/sponsor has prior I-829 (conditions removed) approvals.", "bad": "No track record or a pattern of prior denials/RFEs.", "primary_source": "Sponsor history, news, prior-project outcomes" },
+    { "id": "I8", "weight": 9, "name": "RIA compliance: fund admin, audits, securities", "good": "Independent fund administrator + annual audit + I-956G filings + securities compliance.", "bad": "No fund admin, no audit, securities red flags.", "primary_source": "I-956G evidence, fund-admin engagement, SEC" },
+    { "id": "I9", "weight": 5, "name": "Source-of-funds independence / integrity", "good": "Standard, well-documented SOF pathway; no sanctioned jurisdictions.", "bad": "Opaque/structured SOF guidance from the issuer.", "primary_source": "Issuer SOF guidance vs sanctions/AML norms" }
+  ],
+  "financial_factors": [
+    { "id": "F1", "weight": 15, "name": "Capital-stack position & EB-5 %", "good": "EB-5 is a modest slice with senior debt and meaningful sponsor equity; EB-5 is not the first-loss tranche.", "bad": "EB-5 is the de-facto equity / first-loss and >50% of the stack.", "primary_source": "PPM/I-526E cap table vs title/lender records" },
+    { "id": "F2", "weight": 8, "name": "Loan vs equity model & terms", "good": "Senior or well-secured loan, market rate, clear maturity.", "bad": "Unsecured/subordinated equity with no defined exit.", "primary_source": "Loan agreement / NCE-JCE structure" },
+    { "id": "F3", "weight": 11, "name": "Collateral & guarantees", "good": "Recorded first-lien collateral; completion + repayment guarantees from a creditworthy guarantor.", "bad": "Unsecured, no guarantee, or guarantor is the same shell.", "primary_source": "County recorder / UCC / guarantee docs" },
+    { "id": "F4", "weight": 14, "name": "Developer track record & balance sheet", "good": "Long completed-project history, audited balance sheet, no defaults.", "bad": "First-timer, prior defaults/bankruptcies, thin balance sheet.", "primary_source": "EDGAR, PACER, news, prior-project records" },
+    { "id": "F5", "weight": 12, "name": "Construction / completion risk", "good": "Permitted, GMP contract, bonded GC, low entitlement risk.", "bad": "Pre-entitlement, no permits, single-source GC, cost-overrun exposure.", "primary_source": "Permits, building dept., GC profile" },
+    { "id": "F6", "weight": 11, "name": "Market / demand risk", "good": "Independent market study supports absorption/occupancy; diversified demand.", "bad": "Speculative demand, single tenant, oversupplied submarket.", "primary_source": "Independent market data vs issuer study" },
+    { "id": "F7", "weight": 12, "name": "Repayment / takeout source", "good": "Identified takeout (refi/sale) with conservative LTV and DSCR.", "bad": "'We'll refinance later' with no committed takeout.", "primary_source": "Term sheets, comps, refi feasibility" },
+    { "id": "F8", "weight": 6, "name": "Escrow & redeployment (financial)", "good": "Funds in escrow until I-526E/material milestone; conservative redeployment.", "bad": "Funds released immediately to sponsor; aggressive redeployment.", "primary_source": "Escrow agreement" },
+    { "id": "F9", "weight": 6, "name": "Fees & conflicts of interest", "good": "Arm's-length, disclosed, market fees; no self-dealing.", "bad": "Stacked admin/origination/management fees to affiliates; related-party leases.", "primary_source": "PPM fee schedule + related-party map" },
+    { "id": "F10", "weight": 5, "name": "Return-of-capital / distribution history", "good": "Sponsor has returned EB-5 capital on prior deals.", "bad": "No returns yet, or capital stuck in redeployment loops.", "primary_source": "Prior-project investor outcomes, news" }
+  ],
+  "uncertainty_surcharge": {
+    "formula": "round((1 - avg_confidence / 3) * 12)",
+    "cap_each_composite_at": 100,
+    "explanation": "Computed separately for the immigration factors and the financial factors using that score's average per-factor confidence. Added to the weighted composite. This is the 'do not trust issuer paper' penalty."
+  },
+  "composite_formula": "min(100, round(sum(subscore_i * weight_i) / 100) + uncertainty_surcharge)",
+  "verdict": {
+    "axis_thresholds": { "low_max": 35, "mid_max": 60 },
+    "matrix": {
+      "imm_low":  { "fin_low": "GO",          "fin_mid": "CONDITIONAL", "fin_high": "NO-GO" },
+      "imm_mid":  { "fin_low": "CONDITIONAL", "fin_mid": "CONDITIONAL", "fin_high": "NO-GO" },
+      "imm_high": { "fin_low": "NO-GO",       "fin_mid": "NO-GO",       "fin_high": "NO-GO" }
+    },
+    "confidence_floor": {
+      "min_avg_confidence_for_go": 1.5,
+      "effect": "If overall average confidence < 1.5, the verdict is capped at CONDITIONAL and a 'verdict limited by data gaps' banner is shown."
+    },
+    "conditional_requirement": "Every CONDITIONAL verdict must enumerate the specific conditions that would move it to GO."
+  },
+  "hard_gates": [
+    { "id": "G1", "name": "RC terminated or debarred", "trigger": "Regional center appears on the USCIS termination list or principals are debarred.", "result": "NO-GO" },
+    { "id": "G2", "name": "I-956F denied or withdrawn", "trigger": "The project's I-956F was denied or withdrawn.", "result": "NO-GO" },
+    { "id": "G3", "name": "SEC / fraud enforcement vs principals", "trigger": "An SEC enforcement action, fraud injunction, or criminal action against the principals/sponsor.", "result": "NO-GO" },
+    { "id": "G4", "name": "Proven TEA / set-aside misqualification", "trigger": "The reserved-category set-aside is provably invalid or expired.", "result": "NO-GO" },
+    { "id": "G5", "name": "Confirmed material misrepresentation", "trigger": "A material claim is CONTRADICTED and the adversarial pass confirms it with a second independent source.", "result": "NO-GO" }
+  ]
+}
