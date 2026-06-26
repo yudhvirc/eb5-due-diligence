@@ -15,7 +15,14 @@ Follow the orchestrator pipeline in `skills/eb5-due-diligence/SKILL.md`:
 4. **Adversarial pass** — run `redflag-adversary` to attack favorable claims and confirm contradictions.
 5. **Scoring** — apply `assets/scoring-rubric.json` per `skills/eb5-scoring/SKILL.md`.
 6. **Render** — write `findings.json` and run `scripts/render_report.ps1` to produce
-   `<project>-eb5-report.html`.
+   `<project>-eb5-report.html`, then apply the **post-render enhancements** from
+   `skills/eb5-report/SKILL.md`: a **"Source documents (locally provided)"** block listing the exact
+   filenames you read (or "none received"), and a pointed **owner-facing "Questions to ask in your 1:1"**
+   section built from the report's data gaps, with **inline blue/underlined shareable source links**.
+
+If documents are provided via `--ppm <file-or-folder>`, read **every** file first (extract text with
+`pdftotext -layout`; the Read tool's PDF path needs `pdftoppm`, often missing on Windows) and record the
+exact filenames in `project.source_documents`.
 
 Then give the user a 3-line summary (verdict + the two scores + the single biggest red flag) and the
 path to the HTML report. Do not paste the full report into chat.

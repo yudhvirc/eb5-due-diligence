@@ -26,8 +26,10 @@ Plugin root is available as `${CLAUDE_PLUGIN_ROOT}`. Read the rubric before scor
 
 ## Inputs
 The user may provide any mix of: a **project / RC name**, a **website URL** (`--website`), and/or
-**PDF offering docs** (`--ppm <path>`: PPM, I-526E exemplar, business plan, economic report). Record
-which inputs were provided in `project.inputs_provided`.
+**PDF offering docs** (`--ppm <path>` or a documents folder: PPM, business plan, LPA, subscription,
+escrow, I-526E/I-956F notices, investor decks, FAQs). Record which inputs were provided in
+`project.inputs_provided`, and the **exact filenames** of any locally-provided documents in
+`project.source_documents` (these are surfaced per-section in the report).
 
 ## Pipeline
 
@@ -50,9 +52,12 @@ which inputs were provided in `project.inputs_provided`.
      as a data gap.
 
 ### Phase 1 — Claim extraction (build the question list, not the answer key)
-- If PDFs were provided, read them (use Read; for large/binary PDFs, extract text first). Parse every
-  **material assertion** into a structured claim: RC id, I-956F status, job numbers/cushion, TEA basis,
-  capital-stack %, collateral, guarantees, fees, takeout, prior returns, etc.
+- If PDFs were provided, read them. For multi-page PDFs extract text first with
+  `pdftotext -layout "<file>.pdf" "<out>.txt"` (the Read tool's PDF renderer needs `pdftoppm`, often
+  missing on Windows; `pdftotext` is reliable). Note any image-only/scanned files that yield no text.
+  Record the exact filenames in `project.source_documents`. Parse every **material assertion** into a
+  structured claim: RC id, I-956F status, job numbers/cushion, TEA basis, capital-stack %, collateral,
+  guarantees, fees, takeout, prior returns, etc.
 - For each, set `claim_text`, `source_of_claim` (e.g. "PPM p.42"), `factor`, and `verdict:"UNVERIFIABLE"`
   (pending). The issuer doc is the source of the *claim*, never a verifying *citation*.
 - If only a name/URL was given, derive the claim list from the public marketing materials and from the
@@ -100,7 +105,12 @@ Follow `../eb5-scoring/SKILL.md` exactly:
    `${CLAUDE_PLUGIN_ROOT}/schemas/findings.schema.json`; include `generated_at`).
 2. Render:
    `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Findings findings.json -Out "<project>-eb5-report.html"`
-3. Tell the user the output path and give a 3-line summary (verdict + the two scores + top red flag).
+3. Apply the **post-render enhancements** from `../eb5-report/SKILL.md`: a per-section **"Source
+   documents (locally provided)"** block (from `project.source_documents`, or "none received"), and a
+   pointed **owner-facing "Questions to ask in your 1:1"** section built from `data_gaps`, with **inline
+   blue/underlined shareable source links**. (Comparisons additionally get the one-page summary and the
+   heatmap legend/tooltips — see `commands/eb5-compare.md`.)
+4. Tell the user the output path and give a 3-line summary (verdict + the two scores + top red flag).
    Do **not** restate the whole report in chat.
 
 ## Rules of conduct
