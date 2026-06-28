@@ -97,6 +97,15 @@ questions/footer is inserted before `<footer>`.
    (`color:#4ea1ff;text-decoration:underline`) so they read clearly as links.
 4. **Heatmap legend + tooltips** — add `title="<factor name>"` to each I1–F10 header cell and a visible
    "What the columns mean" legend mapping every code to its factor name (I = immigration, F = financial).
+5. **Source links in the verdict-colored areas** — wherever a verdict is shown in yellow (CONDITIONAL)
+   or red (NO-GO), surface that project's shareable source links right there (not only in the bottom
+   sources ledger), using the same **blue/underlined ↗** style and drawing from each project's tier-≥2
+   `sources[]`:
+   - a **"Key sources for this verdict"** block under each project's verdict banner, border-colored to
+     match the verdict (`var(--cond)` / `var(--nogo)`);
+   - compact source links inside each project's **summary-matrix verdict cell**;
+   - inline links on the **one-page summary's** colored claim cells (I-956F status, regional center,
+     TEA basis — the "Pending", "NOT SC", "marginal/fragile" type claims).
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.
