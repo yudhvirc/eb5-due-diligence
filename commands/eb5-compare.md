@@ -28,7 +28,9 @@ enhancements"). For a comparison, always add: (1) a **"Source documents (locally
 the top of each project's section plus a "Documents reviewed" row in the one-pager; (2) a **one-page
 summary** of the viable (GO/CONDITIONAL) deals at the very top; (3) an **owner-facing "Questions to ask
 in your 1:1"** section built from each project's data gaps, with **inline blue/underlined shareable
-source links**; and (4) the **heatmap legend + I1–F10 hover tooltips**.
+source links** — and, under **every** question, a plain-language **"What this means"** and **"Why it
+matters"** sub-line (assume a non-expert reader; define EB-5 jargon); and (4) the **heatmap legend +
+I1–F10 hover tooltips**.
 
 Give the user a short ranking with the key trade-offs and the path to `eb5-compare.html`. Keep the
 core rule in force for every project: independently verify; never trust issuer/attorney paper.

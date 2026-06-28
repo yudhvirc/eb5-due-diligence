@@ -85,8 +85,16 @@ questions/footer is inserted before `<footer>`.
    Highlight the best deal per row; end with a plain-language "Bottom line".
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
    per project, built from that project's `data_gaps`, led by a baseline set asked of every owner.
-   Append the **shareable source link(s) inline** next to the specific question each one backs, styled
-   **blue and underlined** (`color:#4ea1ff;text-decoration:underline`) so they read clearly as links.
+   For **every** question, include two short plain-language lines directly beneath it (assume a
+   non-expert reader — define EB-5 jargon like TEA, I-956F, at-risk, redeployment, first-lien):
+   - **What this means** — restate the question in everyday language: what you are actually asking for
+     and why you would ask it.
+   - **Why it matters** — what is at stake for the investor (their green card and/or their $800K), and
+     what a straight answer vs. an evasive one tells you.
+   Render these as a muted sub-block under each question (e.g. small text in `var(--ink2)`), so the
+   question stays scannable but the rationale is one glance away. Append the **shareable source link(s)
+   inline** next to the specific question each one backs, styled **blue and underlined**
+   (`color:#4ea1ff;text-decoration:underline`) so they read clearly as links.
 4. **Heatmap legend + tooltips** — add `title="<factor name>"` to each I1–F10 header cell and a visible
    "What the columns mean" legend mapping every code to its factor name (I = immigration, F = financial).
 
