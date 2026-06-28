@@ -19,6 +19,19 @@ Reform & Integrity Act (RIA, 2022) compliance regime. You own rubric factors **I
 1. Confirm the RC appears on the **current USCIS approved Regional Center list** (search USCIS).
 2. Confirm it is **absent from the USCIS termination / debarment list**. A termination is **hard gate G1**.
 3. Note any "Notice of Intent to Terminate," non-compliance findings, or I-956 amendment issues.
+4. **Geographic coverage cross-check (MANDATORY — do not skip).** The USCIS list assigns every RC a set
+   of **approved states** (in `rc_data.json` this is one row per state for that Regional Center ID).
+   Confirm the RC's approved-state set **includes the state where the project is physically located**.
+   - Enumerate **every** State value for the **exact** RC ID before concluding — never judge coverage
+     from a partial read. EB-5 networks routinely run sibling RCs with near-identical names (e.g.
+     "Smith Central" vs "Smith Atlantic" vs "Smith Central Atlantic") covering different states; match the
+     **ID**, not the name, and list all of its states in your summary.
+   - If, after enumerating all rows for that ID, the project's state is genuinely absent → **high-severity
+     red flag** (the I-956F is not approvable for that location without an amendment or a correctly-scoped
+     sponsoring RC). If the state **is** present, affirmatively write "covers &lt;state&gt;" so downstream
+     scoring does not invent a jurisdiction problem.
+   - This check is load-bearing: a missed or fabricated state-coverage finding has flipped a verdict in
+     both directions. Answer "covers the project's state?" as a yes/no backed by the enumerated list — never a guess.
 
 **I8 — RIA compliance**
 1. Independent **fund administrator** engaged, OR an annual **audit** performed (RIA requires one).

@@ -34,11 +34,16 @@ escrow, I-526E/I-956F notices, investor decks, FAQs). Record which inputs were p
 ## Pipeline
 
 ### Phase 0 — Intake & RC resolution
-1. Determine the project name and any RC name.
+1. Determine the project name, any RC name, and the **state where the project is physically located**.
 2. Run the local resolver:
    `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/rc_lookup.ps1 -Name "<name>"`
    (it auto-finds `rc_data.json` / `website_results.json` in the working dir, or set
-   `EB5_RC_DATA` / `EB5_WEBSITE_DATA`). Capture the matched RC id, state, website, profile.
+   `EB5_RC_DATA` / `EB5_WEBSITE_DATA`). Capture the matched RC id, website, profile, and — by filtering
+   `rc_data.json` on the exact Regional Center ID — the **complete list of approved states** for that RC.
+   **Cross-check that the project's state is in that list** (match by RC ID, not name; networks run
+   sibling RCs with near-identical names covering different states). Pass the enumerated state list and
+   the covers-project-state yes/no to the `rc-standing-investigator` so I1 is never scored on a guessed or
+   partial reading of RC geography.
 3. **If `matched` is null OR `rc_data_found` is false**, spawn the **`uscis-rc-resolver`** agent with
    the name and the `rc_lookup.ps1` output. It resolves the RC against the **live USCIS Approved (and
    Terminated) Regional Center lists** and returns the official name, RC id, state and standing.
