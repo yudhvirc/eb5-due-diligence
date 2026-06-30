@@ -122,14 +122,26 @@ questions/footer is inserted before `<footer>`.
    at the top of every project's accordion body, and a short "city, state" appended to each project's
    **1:1-questions heading**. The location is load-bearing (it drives the RC-state and TEA checks), so it
    should never be buried.
-7. **Plain-language glossary** — a collapsible "Plain-language glossary — what the terms mean" panel
-   (near the legend) that defines, for a non-expert reader, every piece of jargon used in the report:
-   capital stack, senior / first lien, second lien, the "first-lien once fully funded; second until then"
-   nuance, **LTV** and loan-to-cost, **TEA** (rural vs high-unemployment) and **why a TEA can show a
-   high % while the county link shows a much lower one** (hand-picked tract bundle vs county-wide rate),
-   I-956F, I-526E / I-829, at-risk / sustainment, redeployment, the repayment/completion/denial
-   guaranties, job cushion, mezzanine / bridge, cap rate / takeout. Keep each definition to one or two
-   plain sentences.
+7. **Plain-language glossary (comprehensive)** — a collapsible "Plain-language glossary — what every
+   term means" panel near the legend. It must cover **every acronym / jargon term that appears anywhere
+   in the report** — before finalizing, scan the rendered visible text for jargon and make sure each one
+   is defined. Keep each definition to one or two plain sentences (no EB-5 or finance background assumed)
+   and **group** them so it stays scannable:
+   - *EB-5 program & immigration:* EB-5, reserved category / set-aside, USCIS, Regional Center, RIA, TEA
+     (rural vs high-unemployment, incl. **why a TEA can show a high % while the county link shows a much
+     lower one** — hand-picked blocks vs county-wide), NCE, JCE, at-risk / sustainment, redeployment,
+     conditional permanent resident, adjudication.
+   - *USCIS forms:* I-956F, I-956G, I-526E, I-829, I-131 / I-765, NIW (and why it doesn't exist for
+     EB-5), NOIT.
+   - *Money & deal structure:* capital stack, senior / first lien, second lien / subordinate, the
+     "1st-lien-once-fully-funded; 2nd-until-then" nuance, pari passu / participation, intercreditor
+     agreement, first-loss, LTV, loan-to-cost, mezzanine / bridge, tranche, NOI, cap rate, DSCR, RevPAR,
+     GMP contract, SOFR, stabilization, takeout, escrow / fund administrator, the repayment / completion
+     / denial guaranties, SBLC, job cushion.
+   - *Securities & background checks:* PPM, LPA, accredited investor, Reg D / Form D, EDGAR,
+     FINRA / BrokerCheck / CRD, source-of-funds.
+   - *How this report scores:* the 0–100 risk sub-score, the 0–3 confidence level, the hard gates
+     (G1–G5), and Immigration vs Financial risk.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.
