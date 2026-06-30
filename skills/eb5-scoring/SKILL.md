@@ -49,14 +49,21 @@ G4 proven TEA/set-aside misqualification · G5 confirmed material misrepresentat
 material claim **confirmed by a second independent source** in the adversarial pass). When a gate fires,
 set its related factor sub-score to 100.
 
+## Priority: immigration first, financial second
+**Immigration de-risking is the PRIMARY objective** (protecting the green card); **financial risk is SECONDARY** (protecting capital). This drives two rules:
+- **Verdict:** the immigration band gates the outcome. Financial risk **alone never forces a NO-GO** when immigration risk is *low* — such a deal is **CONDITIONAL** with the financial problems listed as `conditions_to_clear`. Immigration risk that is *high* is always a NO-GO.
+- **Ranking (comparisons):** rank projects by the **immigration composite first** (lower = better), then by the financial composite as the tiebreaker. Surface the most immigration-de-risked deals at the top of the one-pager and matrix.
+
 ## Verdict (2-D matrix, thresholds 35 / 60)
-Let `imm` and `fin` be the two composites. Band each as low (≤35), mid (36-60), high (>60).
+Let `imm` and `fin` be the two composites. Band each as low (≤35), mid (36-60), high (>60). The matrix is **immigration-primary**: a low-immigration row is never NO-GO from financial risk alone.
 
 | | fin low | fin mid | fin high |
 |---|---|---|---|
-| **imm low** | GO | CONDITIONAL | NO-GO |
+| **imm low** | GO | CONDITIONAL | CONDITIONAL |
 | **imm mid** | CONDITIONAL | CONDITIONAL | NO-GO |
 | **imm high** | NO-GO | NO-GO | NO-GO |
+
+(Change vs a symmetric matrix: **imm-low + fin-high is CONDITIONAL, not NO-GO** — a strongly immigration-de-risked deal is flagged, not killed, by financial risk alone.)
 
 Overrides:
 - Any confirmed hard gate → **NO-GO**.

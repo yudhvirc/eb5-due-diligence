@@ -82,7 +82,10 @@ questions/footer is inserted before `<footer>`.
    (GO/CONDITIONAL) deals across the decision-driving rows: verdict/rank, **location** (city, county,
    state), Immigration & Financial risk, raise, I-956F status, regional center, TEA basis, leverage/LTV,
    repayment guaranty, construction, job cushion, documents reviewed, biggest strength, and the single
-   "#1 thing to clear first". Highlight the best deal per row.
+   "#1 thing to clear first". Highlight the best deal per row. **Order the columns immigration-first**
+   (lowest immigration risk = rank #1, leftmost; financial risk is the secondary tiebreaker), and render
+   the per-project findings in that same order so the matrix, heatmap and accordions all match. De-risking
+   the green card is the primary objective; capital protection comes after (see `../eb5-scoring/SKILL.md`).
    - **TEA row clarity (write for a non-expert):** label each TEA "solid" (rural) or "shaky"
      (high-unemployment), and for a high-unemployment TEA show the issuer's claimed % next to the
      **county-wide** rate. Then add a **full-width plain-English note row beneath the TEA row** that
