@@ -79,10 +79,16 @@ questions/footer is inserted before `<footer>`.
    "Documents reviewed" row in the comparison one-pager, list the locally-provided filenames from
    `project.source_documents`. If none were received, say so explicitly.
 2. **One-page summary** (comparison only) — a panel at the very top comparing the **viable**
-   (GO/CONDITIONAL) deals across the decision-driving rows: verdict/rank, Immigration & Financial risk,
-   raise, I-956F status, regional center, TEA basis, leverage/LTV, repayment guaranty, construction,
-   job cushion, documents reviewed, biggest strength, and the single "#1 thing to clear first".
-   Highlight the best deal per row; end with a plain-language "Bottom line".
+   (GO/CONDITIONAL) deals across the decision-driving rows: verdict/rank, **location** (city, county,
+   state), Immigration & Financial risk, raise, I-956F status, regional center, TEA basis, leverage/LTV,
+   repayment guaranty, construction, job cushion, documents reviewed, biggest strength, and the single
+   "#1 thing to clear first". Highlight the best deal per row.
+   - **TEA row clarity:** for a high-unemployment TEA, show the issuer's claimed % (its **hand-picked
+     tract bundle**) next to the **county-wide** rate, and label the gap (e.g. "6.1% claimed vs ~4.2%
+     county-wide — marginal/gerrymandered"). This prevents the common confusion where the source link
+     (county data) shows a far lower number than the claimed TEA %.
+   - End with a **"Bottom line"** rendered as **bullets — one per deal** (not a dense paragraph), then a
+     one-line closing caution.
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
    per project, built from that project's `data_gaps`, led by a baseline set asked of every owner.
    For **every** question, include two short plain-language lines directly beneath it (assume a
@@ -106,6 +112,19 @@ questions/footer is inserted before `<footer>`.
    - compact source links inside each project's **summary-matrix verdict cell**;
    - inline links on the **one-page summary's** colored claim cells (I-956F status, regional center,
      TEA basis — the "Pending", "NOT SC", "marginal/fragile" type claims).
+6. **Project location in every section** — surface each project's physical location (street/city, county,
+   state) wherever the project appears: a **Location row** in the one-page summary, a 📍 **location bar**
+   at the top of every project's accordion body, and a short "city, state" appended to each project's
+   **1:1-questions heading**. The location is load-bearing (it drives the RC-state and TEA checks), so it
+   should never be buried.
+7. **Plain-language glossary** — a collapsible "Plain-language glossary — what the terms mean" panel
+   (near the legend) that defines, for a non-expert reader, every piece of jargon used in the report:
+   capital stack, senior / first lien, second lien, the "first-lien once fully funded; second until then"
+   nuance, **LTV** and loan-to-cost, **TEA** (rural vs high-unemployment) and **why a TEA can show a
+   high % while the county link shows a much lower one** (hand-picked tract bundle vs county-wide rate),
+   I-956F, I-526E / I-829, at-risk / sustainment, redeployment, the repayment/completion/denial
+   guaranties, job cushion, mezzanine / bridge, cap rate / takeout. Keep each definition to one or two
+   plain sentences.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.
