@@ -79,10 +79,21 @@ questions/footer is inserted before `<footer>`.
    "Documents reviewed" row in the comparison one-pager, list the locally-provided filenames from
    `project.source_documents`. If none were received, say so explicitly.
 2. **One-page summary** (comparison only) — a panel at the very top comparing the **viable**
-   (GO/CONDITIONAL) deals across the decision-driving rows: verdict/rank, Immigration & Financial risk,
-   raise, I-956F status, regional center, TEA basis, leverage/LTV, repayment guaranty, construction,
-   job cushion, documents reviewed, biggest strength, and the single "#1 thing to clear first".
-   Highlight the best deal per row; end with a plain-language "Bottom line".
+   (GO/CONDITIONAL) deals across the decision-driving rows: verdict/rank, **location** (city, county,
+   state), Immigration & Financial risk, raise, I-956F status, regional center, TEA basis, leverage/LTV,
+   repayment guaranty, construction, job cushion, documents reviewed, biggest strength, and the single
+   "#1 thing to clear first". Highlight the best deal per row.
+   - **TEA row clarity (write for a non-expert):** label each TEA "solid" (rural) or "shaky"
+     (high-unemployment), and for a high-unemployment TEA show the issuer's claimed % next to the
+     **county-wide** rate. Then add a **full-width plain-English note row beneath the TEA row** that
+     explains, with no jargon, that to get the $800K price the site must be high-unemployment; the
+     developer may average just **a few small blocks right around the building** (not the county), which
+     is how it reaches e.g. 6.1% while the whole county (the source link) is only ~4–5%; and that if
+     USCIS rejects that block choice the investor can lose the $800K pricing and put the petition at risk.
+     Avoid "tract bundle" / "gerrymandered" in the investor-facing note — say "hand-picked blocks." This
+     prevents the common confusion where the county-data link shows a far lower number than the claimed %.
+   - End with a **"Bottom line"** rendered as **bullets — one per deal** (not a dense paragraph), then a
+     one-line closing caution.
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
    per project, built from that project's `data_gaps`, led by a baseline set asked of every owner.
    For **every** question, include two short plain-language lines directly beneath it (assume a
@@ -106,6 +117,38 @@ questions/footer is inserted before `<footer>`.
    - compact source links inside each project's **summary-matrix verdict cell**;
    - inline links on the **one-page summary's** colored claim cells (I-956F status, regional center,
      TEA basis — the "Pending", "NOT SC", "marginal/fragile" type claims).
+6. **Project location in every section** — surface each project's physical location (street/city, county,
+   state) wherever the project appears: a **Location row** in the one-page summary, a 📍 **location bar**
+   at the top of every project's accordion body, and a short "city, state" appended to each project's
+   **1:1-questions heading**. The location is load-bearing (it drives the RC-state and TEA checks), so it
+   should never be buried.
+7. **Inline jargon tooltips (not a separate glossary panel)** — explain every term **where it appears**.
+   Maintain a map of jargon **surface forms → one-sentence plain-text definition**, then as the **final**
+   post-render pass wrap each occurrence in the visible text with
+   `<abbr class="jt" title="<definition>">term</abbr>` and add `.jt{border-bottom:1px dotted var(--ink2);
+   cursor:help}`, so the reader can **hover any dotted-underlined term anywhere** for its meaning. Add a
+   one-line "hover any underlined term" tip near the legend. Implementation guards (important):
+   - Wrap **only text nodes** — split on tags and skip anything inside `<style>` / `<script>` and inside
+     tag attributes, or you will corrupt the CSS / links.
+   - Use a **single longest-match-first** regex sub per text node (so a definition placed in a `title`
+     isn't re-scanned), with `(?<![\w])…(?![\w])` boundaries so terms aren't matched inside other words.
+   - Definitions are **plain text only** (no HTML, no double-quotes) — they live in a `title` attribute.
+   Cover **every** acronym/term that appears anywhere (scan the rendered text first). At minimum:
+   - *EB-5 program & immigration:* EB-5, reserved category / set-aside, USCIS, Regional Center, RIA, TEA
+     (rural vs high-unemployment, incl. **why a TEA can show a high % while the county link shows a much
+     lower one** — hand-picked blocks vs county-wide), NCE, JCE, at-risk / sustainment, redeployment,
+     conditional permanent resident, adjudication.
+   - *USCIS forms:* I-956F, I-956G, I-526E, I-829, I-131 / I-765, NIW (and why it doesn't exist for
+     EB-5), NOIT.
+   - *Money & deal structure:* capital stack, senior / first lien, second lien / subordinate, the
+     "1st-lien-once-fully-funded; 2nd-until-then" nuance, pari passu / participation, intercreditor
+     agreement, first-loss, LTV, loan-to-cost, mezzanine / bridge, tranche, NOI, cap rate, DSCR, RevPAR,
+     GMP contract, SOFR, stabilization, takeout, escrow / fund administrator, the repayment / completion
+     / denial guaranties, SBLC, job cushion.
+   - *Securities & background checks:* PPM, LPA, accredited investor, Reg D / Form D, EDGAR,
+     FINRA / BrokerCheck / CRD, source-of-funds.
+   - *How this report scores:* the 0–100 risk sub-score, the 0–3 confidence level, the hard gates
+     (G1–G5), and Immigration vs Financial risk.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.
