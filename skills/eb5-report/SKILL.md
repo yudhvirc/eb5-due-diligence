@@ -83,10 +83,15 @@ questions/footer is inserted before `<footer>`.
    state), Immigration & Financial risk, raise, I-956F status, regional center, TEA basis, leverage/LTV,
    repayment guaranty, construction, job cushion, documents reviewed, biggest strength, and the single
    "#1 thing to clear first". Highlight the best deal per row.
-   - **TEA row clarity:** for a high-unemployment TEA, show the issuer's claimed % (its **hand-picked
-     tract bundle**) next to the **county-wide** rate, and label the gap (e.g. "6.1% claimed vs ~4.2%
-     county-wide — marginal/gerrymandered"). This prevents the common confusion where the source link
-     (county data) shows a far lower number than the claimed TEA %.
+   - **TEA row clarity (write for a non-expert):** label each TEA "solid" (rural) or "shaky"
+     (high-unemployment), and for a high-unemployment TEA show the issuer's claimed % next to the
+     **county-wide** rate. Then add a **full-width plain-English note row beneath the TEA row** that
+     explains, with no jargon, that to get the $800K price the site must be high-unemployment; the
+     developer may average just **a few small blocks right around the building** (not the county), which
+     is how it reaches e.g. 6.1% while the whole county (the source link) is only ~4–5%; and that if
+     USCIS rejects that block choice the investor can lose the $800K pricing and put the petition at risk.
+     Avoid "tract bundle" / "gerrymandered" in the investor-facing note — say "hand-picked blocks." This
+     prevents the common confusion where the county-data link shows a far lower number than the claimed %.
    - End with a **"Bottom line"** rendered as **bullets — one per deal** (not a dense paragraph), then a
      one-line closing caution.
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
