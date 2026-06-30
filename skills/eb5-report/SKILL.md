@@ -122,11 +122,18 @@ questions/footer is inserted before `<footer>`.
    at the top of every project's accordion body, and a short "city, state" appended to each project's
    **1:1-questions heading**. The location is load-bearing (it drives the RC-state and TEA checks), so it
    should never be buried.
-7. **Plain-language glossary (comprehensive)** — a collapsible "Plain-language glossary — what every
-   term means" panel near the legend. It must cover **every acronym / jargon term that appears anywhere
-   in the report** — before finalizing, scan the rendered visible text for jargon and make sure each one
-   is defined. Keep each definition to one or two plain sentences (no EB-5 or finance background assumed)
-   and **group** them so it stays scannable:
+7. **Inline jargon tooltips (not a separate glossary panel)** — explain every term **where it appears**.
+   Maintain a map of jargon **surface forms → one-sentence plain-text definition**, then as the **final**
+   post-render pass wrap each occurrence in the visible text with
+   `<abbr class="jt" title="<definition>">term</abbr>` and add `.jt{border-bottom:1px dotted var(--ink2);
+   cursor:help}`, so the reader can **hover any dotted-underlined term anywhere** for its meaning. Add a
+   one-line "hover any underlined term" tip near the legend. Implementation guards (important):
+   - Wrap **only text nodes** — split on tags and skip anything inside `<style>` / `<script>` and inside
+     tag attributes, or you will corrupt the CSS / links.
+   - Use a **single longest-match-first** regex sub per text node (so a definition placed in a `title`
+     isn't re-scanned), with `(?<![\w])…(?![\w])` boundaries so terms aren't matched inside other words.
+   - Definitions are **plain text only** (no HTML, no double-quotes) — they live in a `title` attribute.
+   Cover **every** acronym/term that appears anywhere (scan the rendered text first). At minimum:
    - *EB-5 program & immigration:* EB-5, reserved category / set-aside, USCIS, Regional Center, RIA, TEA
      (rural vs high-unemployment, incl. **why a TEA can show a high % while the county link shows a much
      lower one** — hand-picked blocks vs county-wide), NCE, JCE, at-risk / sustainment, redeployment,
