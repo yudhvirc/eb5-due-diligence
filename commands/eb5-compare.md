@@ -26,7 +26,8 @@ project report as a collapsible accordion.
 **Then apply the post-render enhancements** (see `skills/eb5-report/SKILL.md` → "Post-render
 enhancements"). For a comparison, always add: (1) a **"Source documents (locally provided)"** block at
 the top of each project's section plus a "Documents reviewed" row in the one-pager; (2) a **one-page
-summary** of the viable (GO/CONDITIONAL) deals at the very top; (3) an **owner-facing "Questions to ask
+summary** of the viable (GO/CONDITIONAL) deals at the very top, **ordered immigration-first** (best
+immigration risk leftmost; render the findings in that order so the matrix, heatmap and accordions match); (3) an **owner-facing "Questions to ask
 in your 1:1"** section built from each project's data gaps, with **inline blue/underlined shareable
 source links** — and, under **every** question, a plain-language **"What this means"** and **"Why it
 matters"** sub-line (assume a non-expert reader; define EB-5 jargon); (4) the **heatmap legend +
@@ -34,5 +35,8 @@ I1–F10 hover tooltips**; and (5) **source links in every verdict-colored area*
 this verdict" block under each project's banner, links in the summary-matrix verdict cells, and inline
 links on the one-page summary's yellow/red claim cells.
 
-Give the user a short ranking with the key trade-offs and the path to `eb5-compare.html`. Keep the
+Give the user a short ranking with the key trade-offs and the path to `eb5-compare.html`. **Rank
+immigration-first:** order projects by the immigration composite (lower = better), with financial risk as
+the secondary tiebreaker — de-risking the green card is the primary objective, capital protection comes
+after (see `skills/eb5-scoring/SKILL.md` → "Priority: immigration first, financial second"). Keep the
 core rule in force for every project: independently verify; never trust issuer/attorney paper.

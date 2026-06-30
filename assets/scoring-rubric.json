@@ -39,12 +39,15 @@
   },
   "composite_formula": "min(100, round(sum(subscore_i * weight_i) / 100) + uncertainty_surcharge)",
   "verdict": {
+    "priority": "Immigration de-risking is the PRIMARY objective (protecting the green card); financial risk is SECONDARY (protecting capital). The immigration band gates the verdict: financial risk ALONE never forces a NO-GO when immigration risk is low. Immigration risk that is high is always a NO-GO.",
+    "ranking": "In a comparison, rank projects by the immigration composite FIRST (lower = better), then by the financial composite as the tiebreaker. Surface the most immigration-de-risked deals at the top of the one-pager and matrix.",
     "axis_thresholds": { "low_max": 35, "mid_max": 60 },
     "matrix": {
-      "imm_low":  { "fin_low": "GO",          "fin_mid": "CONDITIONAL", "fin_high": "NO-GO" },
+      "imm_low":  { "fin_low": "GO",          "fin_mid": "CONDITIONAL", "fin_high": "CONDITIONAL" },
       "imm_mid":  { "fin_low": "CONDITIONAL", "fin_mid": "CONDITIONAL", "fin_high": "NO-GO" },
       "imm_high": { "fin_low": "NO-GO",       "fin_mid": "NO-GO",       "fin_high": "NO-GO" }
     },
+    "matrix_note": "Immigration-primary. imm_low + fin_high = CONDITIONAL (not NO-GO): a project whose immigration is strongly de-risked is never sunk by financial risk alone — it is flagged CONDITIONAL with the financial issues listed as conditions_to_clear. imm_high stays NO-GO across the row because immigration is the priority.",
     "confidence_floor": {
       "min_avg_confidence_for_go": 1.5,
       "effect": "If overall average confidence < 1.5, the verdict is capped at CONDITIONAL and a 'verdict limited by data gaps' banner is shown."
