@@ -1,0 +1,17 @@
+{
+  "$comment": "Auto-discovered plugin hooks for eb5-due-diligence. The PreToolUse 'privacy guard' deterministically blocks reading or transmitting the CONTENTS of files inside an EB-5 package's high-sensitivity folders (identity / source-of-funds / path-of-funds / filed immigration forms), enforcing the privacy hard rule of the eb5-prepare and eb5-gapcheck skills at the harness level rather than relying on the model. It is narrowly scoped to those distinctively-named folders, so it does not interfere with unrelated work or with /eb5-vet reading issuer offering documents. See scripts/privacy_guard.ps1.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Edit|Grep|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/privacy_guard.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

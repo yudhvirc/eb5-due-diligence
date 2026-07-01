@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EB-5 petition package manifest",
+  "description": "Written as _eb5_manifest.json at the root of a package scaffolded by the eb5-prepare skill. Consumed by eb5-gapcheck to know what SHOULD exist and — critically — which files are non-sensitive 'scaffold' files that are safe to read in full. Files NOT listed under scaffold_files are treated as opaque (metadata only): eb5-gapcheck must never read, parse, quote, or transmit their contents.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generator", "created", "scaffold_marker", "role", "stage", "sof_paths", "expected", "privacy"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "generator": { "type": "string", "const": "eb5-prepare" },
+    "generator_version": { "type": "string" },
+    "created": { "type": "string", "description": "Date the package was scaffolded (YYYY-MM-DD)." },
+    "project_label": { "type": "string", "description": "Non-sensitive label only (project / RC name or a chosen package name). Never an investor's personal data." },
+    "scaffold_marker": {
+      "type": "string",
+      "description": "The exact first-line marker every generated scaffold file carries. eb5-gapcheck uses it as a secondary safe-to-read signal when no manifest is present."
+    },
+    "role": { "type": "string", "enum": ["investor", "attorney_or_paralegal", "advisor", "unspecified"] },
+    "stage": { "type": "string", "enum": ["pre_investment", "i526e_preparation", "i829_conditions", "unspecified"] },
+    "sof_paths": {
+      "type": "array",
+      "description": "Selected source-of-funds CATEGORIES (not amounts or account data).",
+      "items": { "type": "string", "enum": ["salary", "property", "business", "gift", "inheritance", "loan", "investment"] }
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "foreign_language_docs": { "type": "boolean", "description": "If true, certified-translation items are expected." },
+        "dependents": { "type": "boolean", "description": "Whether dependent (spouse/children) document slots are expected." }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["folders", "scaffold_files"],
+      "properties": {
+        "folders": {
+          "type": "array",
+          "description": "Folders that should exist (relative to package root).",
+          "items": { "type": "string" }
+        },
+        "sof_subfolders": {
+          "type": "array",
+          "description": "Per-source subfolders expected under 02_Source_of_Funds/_by_source/.",
+          "items": { "type": "string" }
+        },
+        "scaffold_files": {
+          "type": "array",
+          "description": "AUTHORITATIVE allow-list of non-sensitive files that eb5-gapcheck may read in full. Anything not in this list is metadata-only.",
+          "items": { "type": "string" }
+        },
+        "working_docs": {
+          "type": "array",
+          "description": "Files the user is expected to FILL from a template (e.g. SOF_Narrative.md). May contain figures/PII once filled — eb5-gapcheck may only scan them for remaining placeholder tokens, never read their content.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "sensitive_globs", "placeholder_tokens"],
+      "properties": {
+        "policy": {
+          "type": "string",
+          "description": "Human-readable restatement of the hard rule: structure-only inspection; never read/echo/transmit sensitive document contents."
+        },
+        "sensitive_globs": {
+          "type": "array",
+          "description": "Path/extension globs whose CONTENTS must never be read. Folders 01/02/03 and common document/spreadsheet/image formats.",
+          "items": { "type": "string" }
+        },
+        "builder_token": { "type": "string", "description": "Token form the builder must fully substitute (e.g. '{{...}}'). Any remaining occurrence is a build defect." },
+        "placeholder_tokens": {
+          "type": "array",
+          "description": "User-fill placeholder forms (e.g. '[[FILL'). Remaining occurrences mean a template is incomplete.",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
