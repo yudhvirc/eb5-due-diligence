@@ -61,6 +61,8 @@ After changing local files, refresh with `/plugin marketplace update eb5-due-dil
 | `/eb5-vet <project or RC name> [--ppm <path>] [--website <url>]` | Full multi-agent due diligence on one project → HTML report. |
 | `/eb5-compare <projectA> <projectB> [...]` | Vet several projects and produce a side-by-side comparison report. |
 | `/eb5-quickcheck <project or RC name>` | Cheap triage: regional-center existence + standing only (no full web fan-out). |
+| `/eb5-prepare [label] [folder]` | Scaffold a complete, **privacy-safe** EB-5 petition document package (folders + tailored checklist + blank templates) so the attorney gets a complete set the first time. |
+| `/eb5-gapcheck <package folder>` | Check a document folder for gaps/readiness and the attorney follow-ups each gap triggers — by inspecting **structure only**. |
 
 You can hand the tool a project in any of these forms (combine them for best results):
 
@@ -70,6 +72,44 @@ You can hand the tool a project in any of these forms (combine them for best res
 - **Project / RC website URL** — pass with `--website <url>`.
 
 ---
+
+## Preparing your own documents (reduce the attorney back-and-forth)
+
+Vetting tells you whether a *project* is sound. The other half of an EB-5 filing is the
+**investor's own package** — identity, source of funds, path of funds, the investment and
+immigration documents. Assembling it is where most of the to-and-fro (and most source-of-funds
+RFEs) happen. Two commands help:
+
+- **`/eb5-prepare`** scaffolds a complete, organized package: a numbered folder structure, a
+  **checklist tailored to your source-of-funds path(s)**, per-folder guidance that front-loads
+  the questions attorneys usually ask, and blank fill-in templates (source-of-funds narrative,
+  path-of-funds flow, attorney Q&A log). It asks a few non-sensitive questions, then generates
+  the artifacts — so you can hand counsel a complete set the first time.
+- **`/eb5-gapcheck`** validates a package folder and reports what's missing or incomplete and
+  the attorney follow-up each gap would trigger, with a `READY / NEARLY READY / NOT READY`
+  verdict in `EB5-Readiness-Report.md`.
+
+> 🔒 **Privacy is a hard rule for both.** `/eb5-prepare` builds **blank structure and templates
+> only** — it never asks for, echoes, or stores financial figures, account numbers, or PII; you
+> fill those in privately, locally, afterward. `/eb5-gapcheck` inspects **structure and
+> completeness only** — it never opens, reads, quotes, or transmits the contents of any
+> financial document or identity document (it works from filenames, sizes, and the non-sensitive
+> scaffold files). Neither skill has network access, so nothing leaves your machine through
+> them. See each package's `PRIVACY-AND-HANDLING.md` for handling guidance.
+>
+> **Enforced, not just promised.** A bundled `PreToolUse` hook (`hooks/hooks.json` +
+> `scripts/privacy_guard.ps1`) blocks reading or transmitting the contents of files in a
+> package's high-sensitivity folders (`01_Identity_and_Personal`, `02_Source_of_Funds`,
+> `03_Path_of_Funds`, `05_Immigration_Forms`) **at the harness level** — so the protection holds
+> regardless of model behavior. It is scoped to those distinctively-named folders, so it leaves
+> unrelated work and `/eb5-vet`'s reading of issuer offering docs (e.g. in
+> `04_Investment_Documents/`) untouched. Scaffold files (`README.md`, `*_TEMPLATE.md`, `.keep`)
+> inside a sensitive folder stay readable. The hook requires PowerShell (`pwsh`), like the rest
+> of the plugin; if you'd rather not run it, delete `hooks/hooks.json` and the instruction-level
+> rules still apply.
+
+These pair naturally with vetting: run `/eb5-vet` on the project and save the report into the
+package's `06_Project_Due_Diligence/` folder.
 
 ## Local data files (recommended)
 

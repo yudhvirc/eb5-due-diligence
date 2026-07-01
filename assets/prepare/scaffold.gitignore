@@ -1,0 +1,39 @@
+# EB-5 petition package — keep sensitive material OUT of version control.
+# This package contains personal identity documents and source-of-funds proof.
+# Best practice: do not put this package under git at all. If you must, this file
+# excludes the sensitive folders and common document/spreadsheet formats.
+
+# Sensitive folders (PII + source-of-funds proof)
+01_Identity_and_Personal/
+02_Source_of_Funds/
+03_Path_of_Funds/
+05_Immigration_Forms/
+
+# Sensitive document formats anywhere in the package
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.doc
+
+# Filled working copies of the templates (may contain figures/PII)
+**/SOF_Narrative.md
+**/Path_of_Funds.md
+
+# Keep the structural scaffold tracked (READMEs, checklist, manifest, .keep)
+!**/README.md
+!DOCUMENT_CHECKLIST.md
+!PRIVACY-AND-HANDLING.md
+!_eb5_manifest.json
+!**/.keep
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

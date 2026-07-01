@@ -5,6 +5,13 @@
 /eb5-compare.html
 /*.findings.json
 
+# Runtime artifacts produced by /eb5-prepare and /eb5-gapcheck. These are user
+# document packages (may contain personal identity / source-of-funds material) and
+# their readiness reports — never commit them if the tool was run inside this repo.
+/EB5-Package*/
+/_eb5_manifest.json
+/EB5-Readiness-Report.md
+
 # Local data files.
 # rc_data.json (neutral USCIS name / state / RC-ID snapshot) IS checked in.
 # website_results.json is user-supplied (it carries scraped ratings/reviews and
