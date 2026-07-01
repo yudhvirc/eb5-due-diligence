@@ -61,8 +61,11 @@ with **AskUserQuestion** in a single call (each question ≤ 4 options):
 Then ask, as a short **plain-text** question in chat (too many options for the picker):
 
 - **Source-of-funds path(s)** — "Which apply? Reply with any of: `salary`, `property`,
-  `business`, `gift`, `inheritance`, `loan`, `investment`." (Categories only — **do not** ask
-  for amounts or accounts.)
+  `business`, `gift`, `inheritance`, `loan`, `investment`, `rsu`." (Categories only — **do not**
+  ask for amounts or accounts.) `rsu` = restricted stock units / equity compensation; it is its
+  own path because USCIS traces both the *employer grant/vesting* origin and the *sale of the
+  vested shares*. If the user names a source that isn't in this list (e.g. "RSU", "stock
+  options", "crypto"), map it to the closest slug(s) and tell them which you used.
 - **Dependents** — "Include document slots for dependents (spouse / children under 21)? yes/no."
 - **Project label (optional)** — "A non-personal label for the package, e.g. the project or
   regional-center name. Press enter to skip." Caution them not to include personal data.
@@ -124,7 +127,7 @@ Generation rules:
    otherwise). Fill the same `{{...}}` tokens. If "All documents are in English", you may drop
    the certified-translation lines (or leave them marked `[n/a]`).
 4. **`_by_source/<path>/`** — create one subfolder per selected SOF path (slugs: `salary`,
-   `property`, `business`, `gift`, `inheritance`, `loan`, `investment`), each with a `.keep`
+   `property`, `business`, `gift`, `inheritance`, `loan`, `investment`, `rsu`), each with a `.keep`
    whose single line points back to `../../README.md`.
 5. **`_eb5_manifest.json`** — conform to `eb5_package_manifest.schema.json`. Record: `created`,
    `role`, `stage`, `sof_paths`, `options` (`foreign_language_docs`, `dependents`),

@@ -111,6 +111,10 @@ the attorney would otherwise email back about). Draw the follow-up text from the
 "Common attorney follow-ups" sections. Examples:
 - `02_Source_of_Funds/_by_source/<path>/` empty ⇒ "Attorney will ask for the <path> proof set and
   the *source of the source*."
+- `02_Source_of_Funds/_by_source/rsu/` empty ⇒ "Attorney will ask for the RSU grant/award and
+  vesting records, the brokerage sale of the vested shares, and the *source of the source* — the
+  employment that granted the RSUs." (RSUs span employment income and securities proceeds, so
+  both halves are traced.)
 - A non-English document folder with no translation companion files ⇒ "Will ask for certified
   English translations."
 - `SOF_Narrative.md` missing or has many `[[FILL]]` left ⇒ "The single most common rework item —

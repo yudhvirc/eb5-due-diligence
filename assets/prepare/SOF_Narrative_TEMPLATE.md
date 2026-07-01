@@ -26,9 +26,9 @@ took to the project.
 
 ## 3. The source(s), one by one
 For **each** source you selected (salary, property sale, business, gift, inheritance, loan,
-investments), write a short subsection. Cover: what the source is, the time period, **the
-source of the source** (how that money was itself lawfully obtained), and which documents in
-`02_Source_of_Funds/` prove it.
+investments, restricted stock units (RSUs) / equity compensation), write a short subsection.
+Cover: what the source is, the time period, **the source of the source** (how that money was
+itself lawfully obtained), and which documents in `02_Source_of_Funds/` prove it.
 
 ### Source 1 — [[FILL: e.g., "Sale of apartment in <city>"]]
 > - What it is: [[FILL]]

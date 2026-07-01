@@ -20,7 +20,7 @@
     "sof_paths": {
       "type": "array",
       "description": "Selected source-of-funds CATEGORIES (not amounts or account data).",
-      "items": { "type": "string", "enum": ["salary", "property", "business", "gift", "inheritance", "loan", "investment"] }
+      "items": { "type": "string", "enum": ["salary", "property", "business", "gift", "inheritance", "loan", "investment", "rsu"] }
     },
     "options": {
       "type": "object",

@@ -86,6 +86,18 @@ paths you didn't select have been removed. Add items your attorney specifically 
 - [ ] Proof proceeds reached the account used for the EB-5 investment
 <!-- SOF:investment END -->
 
+<!-- SOF:rsu START -->
+### B8. Restricted stock units (RSUs) / equity compensation
+- [ ] Employer RSU grant / award agreement(s) establishing the equity compensation
+- [ ] Vesting schedule and vesting confirmations for the units that funded the investment
+- [ ] Pay records / employer statements showing the vested RSU value reported as income
+- [ ] Brokerage statements showing the vested shares and their sale
+- [ ] Tax documentation for both the RSU income at vesting and any capital gain on sale
+- [ ] Evidence the sale proceeds reached the account used for the EB-5 investment
+- [ ] Source of the source: proof of the employment that granted the RSUs (ties to the salary
+      evidence set if you also selected that path)
+<!-- SOF:rsu END -->
+
 ## C. Path of funds (the transfer trail)  → `03_Path_of_Funds/`
 
 - [ ] **Path-of-Funds flow** completed from `03_Path_of_Funds/Path_of_Funds_TEMPLATE.md`
