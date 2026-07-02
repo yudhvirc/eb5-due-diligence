@@ -5,6 +5,13 @@ argument-hint: "<project or regional-center name> [--ppm <file-or-folder>] [--we
 
 Run the **eb5-due-diligence** skill end-to-end on the project described by: `$ARGUMENTS`
 
+**Create today's output folder first.** Before writing any artifacts, make a **new dated run folder** in
+the working directory — `eb5-run-YYYYMMDD` (today's date; reuse it for additional same-day runs, or add a
+short suffix / project slug so nothing is clobbered, e.g. `eb5-run-YYYYMMDD-<slug>`). Write the
+`findings.json` and the rendered `<project>-eb5-report.html` (and any post-render enhancement script)
+**inside that folder**, so each day's run is self-contained (see the unique-output-filenames rule).
+PowerShell: `$run="eb5-run-$(Get-Date -Format yyyyMMdd)"; New-Item -ItemType Directory -Force -Path $run`.
+
 Follow the orchestrator pipeline in `skills/eb5-due-diligence/SKILL.md`:
 
 1. **Intake & RC resolution** — parse the name and any `--ppm` / `--website` arguments; run
@@ -15,7 +22,7 @@ Follow the orchestrator pipeline in `skills/eb5-due-diligence/SKILL.md`:
 4. **Adversarial pass** — run `redflag-adversary` to attack favorable claims and confirm contradictions.
 5. **Scoring** — apply `assets/scoring-rubric.json` per `skills/eb5-scoring/SKILL.md`.
 6. **Render** — write `findings.json` and run `scripts/render_report.ps1` to produce
-   `<project>-eb5-report.html`, then apply the **post-render enhancements** from
+   `<project>-eb5-report.html` **(both inside today's `eb5-run-YYYYMMDD` folder)**, then apply the **post-render enhancements** from
    `skills/eb5-report/SKILL.md`: a **"Source documents (locally provided)"** block listing the exact
    filenames you read (or "none received"), and a pointed **owner-facing "Questions to ask in your 1:1"**
    section built from the report's data gaps, with **inline blue/underlined shareable source links** and,
