@@ -125,17 +125,24 @@ questions/footer is inserted before `<footer>`.
    at the top of every project's accordion body, and a short "city, state" appended to each project's
    **1:1-questions heading**. The location is load-bearing (it drives the RC-state and TEA checks), so it
    should never be buried.
-7. **Inline jargon tooltips (not a separate glossary panel)** — explain every term **where it appears**.
+7. **Inline jargon info icons (not a separate glossary panel)** — explain every term **where it appears**.
    Maintain a map of jargon **surface forms → one-sentence plain-text definition**, then as the **final**
-   post-render pass wrap each occurrence in the visible text with
-   `<abbr class="jt" title="<definition>">term</abbr>` and add `.jt{border-bottom:1px dotted var(--ink2);
-   cursor:help}`, so the reader can **hover any dotted-underlined term anywhere** for its meaning. Add a
-   one-line "hover any underlined term" tip near the legend. Implementation guards (important):
+   post-render pass wrap each occurrence in the visible text with a small **clickable info icon placed
+   inline, immediately after the term** (no hover — it must work on touch/mobile):
+   `<span class="jt">term<button type="button" class="ji" aria-label="What is term?">i</button><span class="ji-pop" role="tooltip"><definition></span></span>`.
+   Clicking the icon reveals the definition in a **self-contained popover bubble**. The `.jt` / `.ji` /
+   `.ji-pop` CSS **and** the click/dismiss JS (one bubble open at a time; click-outside, Esc, scroll or
+   resize closes it; flips up near the bottom edge) live in `assets/report-template.html`, so the report
+   needs no per-file script and stays emailable/offline. Add a one-line "tap the info icon next to any
+   term" tip near the legend. Implementation guards (important):
    - Wrap **only text nodes** — split on tags and skip anything inside `<style>` / `<script>` and inside
      tag attributes, or you will corrupt the CSS / links.
-   - Use a **single longest-match-first** regex sub per text node (so a definition placed in a `title`
-     isn't re-scanned), with `(?<![\w])…(?![\w])` boundaries so terms aren't matched inside other words.
-   - Definitions are **plain text only** (no HTML, no double-quotes) — they live in a `title` attribute.
+   - Use a **single longest-match-first** regex sub per text node (so already-injected markup isn't
+     re-scanned), with `(?<![\w])…(?![\w])` boundaries so terms aren't matched inside other words.
+   - The definition is the **text content** of `.ji-pop` (not an attribute) — **HTML-escape** `&`, `<`, `>`
+     and keep it plain text (no markup). Escape the term in the `aria-label` too.
+   - If rendering with an older template that lacks the `.ji-pop` rules, inject the CSS + JS once (guard on
+     whether `.ji-pop` already exists) so the report is always self-contained.
    Cover **every** acronym/term that appears anywhere (scan the rendered text first). At minimum:
    - *EB-5 program & immigration:* EB-5, reserved category / set-aside, USCIS, Regional Center, RIA, TEA
      (rural vs high-unemployment, incl. **why a TEA can show a high % while the county link shows a much
