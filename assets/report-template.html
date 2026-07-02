@@ -99,6 +99,22 @@
 
   footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
   code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:12.5px}
+
+  /* inline jargon: a clickable info icon (inline, right after the term) opens a
+     self-contained definition bubble — no hover, works on touch. */
+  .jt{white-space:nowrap}
+  .ji{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;
+    margin:0 1px 0 2px;padding:0;border:0;border-radius:50%;background:var(--accent);color:#fff;
+    font:italic 700 10px/1 Georgia,"Times New Roman",serif;cursor:pointer;vertical-align:super;
+    -webkit-appearance:none;appearance:none}
+  .ji:hover{filter:brightness(1.12)} .ji:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .ji-pop{display:none;position:fixed;z-index:200;width:min(290px,86vw);white-space:normal;
+    background:var(--panel2);color:var(--ink);border:1px solid var(--accent);border-radius:9px;
+    padding:9px 12px;font-size:12.5px;line-height:1.55;font-weight:400;
+    box-shadow:0 8px 26px rgba(0,0,0,.5);text-align:left}
+  .jt-open .ji-pop{display:block}
+  @media print{.ji{display:none}.jt .ji-pop{display:block;position:static;width:auto;box-shadow:none;
+    border-color:var(--line);margin:4px 0}}
   @media print{body{background:#fff;color:#000}.panel{break-inside:avoid}}
 </style>
 </head>
@@ -120,6 +136,34 @@ function eb5Filter(btn, verdict){
     r.style.display = (verdict==='ALL'||r.getAttribute('data-verdict')===verdict)?'':'none';
   });
 }
+// Inline jargon: click the info icon to reveal its definition in a self-contained bubble.
+// One open at a time; click-outside, Esc, scroll or resize dismiss it; bubble flips up if
+// it would run off the bottom. Vanilla JS, no dependencies.
+(function(){
+  var open=null;
+  function close(){ if(open){ open.classList.remove('jt-open'); open=null; } }
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('.ji');
+    if(btn){
+      e.preventDefault(); e.stopPropagation();
+      var jt=btn.closest('.jt'); if(jt===open){ close(); return; }
+      close();
+      var pop=jt.querySelector('.ji-pop'); if(!pop){ return; }
+      jt.classList.add('jt-open'); open=jt;
+      var r=btn.getBoundingClientRect();
+      var vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight;
+      var pw=pop.offsetWidth, ph=pop.offsetHeight;
+      var left=Math.min(Math.max(8,r.left-4), Math.max(8,vw-pw-8));
+      var top=r.bottom+6; if(top+ph>vh-8){ top=Math.max(8,r.top-ph-6); }
+      pop.style.left=left+'px'; pop.style.top=top+'px';
+      return;
+    }
+    if(open && !e.target.closest('.ji-pop')){ close(); }
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ close(); } });
+  window.addEventListener('scroll',function(){ close(); },true);
+  window.addEventListener('resize',function(){ close(); });
+})();
 </script>
 </body>
 </html>
