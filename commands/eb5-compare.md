@@ -5,18 +5,27 @@ argument-hint: "<projectA> | <projectB> | <projectC> ...  (separate projects wit
 
 Compare multiple EB-5 projects. Projects are given in `$ARGUMENTS`, separated by `|`.
 
+**Create today's output folder first.** Before writing any artifacts, make a **new dated run folder** in
+the working directory — `eb5-run-YYYYMMDD` (today's date). Run again the same day? Reuse it, or add a short
+suffix / project slug so nothing is clobbered (e.g. `eb5-run-YYYYMMDD-b`, `eb5-run-YYYYMMDD-compare`). Put
+**all** outputs — every `projN.json`, the rendered `eb5-compare.html`, and any post-render enhancement
+script — **inside that folder**, so each day's run is self-contained and never overwrites a prior one (see
+the unique-output-filenames rule). PowerShell: `$run="eb5-run-$(Get-Date -Format yyyyMMdd)"; New-Item
+-ItemType Directory -Force -Path $run` (bash: `run="eb5-run-$(date +%Y%m%d)"; mkdir -p "$run"`).
+
 **If the user provides a documents folder/files:** first read **every** file in it (extract text with
 `pdftotext -layout`, since the Read tool's PDF renderer needs `pdftoppm`, often missing on Windows).
 Map each document to its project, and record the **exact filenames** in each project's
 `project.source_documents`. Treat them as primary inputs but still independently verify every claim.
 
 For **each** project, run the full **eb5-due-diligence** pipeline (see `commands/eb5-vet.md` and
-`skills/eb5-due-diligence/SKILL.md`) and write its own findings file: `proj1.json`, `proj2.json`, ….
+`skills/eb5-due-diligence/SKILL.md`) and write its own findings file **inside today's run folder**:
+`$run/proj1.json`, `$run/proj2.json`, ….
 
-Then render the comparison:
+Then render the comparison (output into the same run folder):
 
 ```
-pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Compare -Findings proj1.json,proj2.json[,...] -Out eb5-compare.html
+pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Compare -Findings $run/proj1.json,$run/proj2.json[,...] -Out $run/eb5-compare.html
 ```
 
 The comparison report shows a summary matrix (best value per column highlighted, with an avg-confidence
@@ -35,7 +44,8 @@ I1–F10 hover tooltips**; and (5) **source links in every verdict-colored area*
 this verdict" block under each project's banner, links in the summary-matrix verdict cells, and inline
 links on the one-page summary's yellow/red claim cells.
 
-Give the user a short ranking with the key trade-offs and the path to `eb5-compare.html`. **Rank
+Give the user a short ranking with the key trade-offs and the path to the report
+(`<run-folder>/eb5-compare.html`). **Rank
 immigration-first:** order projects by the immigration composite (lower = better), with financial risk as
 the secondary tiebreaker — de-risking the green card is the primary objective, capital protection comes
 after (see `skills/eb5-scoring/SKILL.md` → "Priority: immigration first, financial second"). Keep the

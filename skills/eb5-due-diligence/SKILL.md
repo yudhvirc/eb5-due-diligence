@@ -106,10 +106,16 @@ Follow `../eb5-scoring/SKILL.md` exactly:
 7. Deduplicate all citations into `sources[]` (preserve tier, is_issuer, accessed date).
 
 ### Phase 5 — Render
-1. Write the assembled object to `findings.json` (validate mentally against
+0. **Create today's run folder.** Make a **new dated output folder** in the working directory,
+   `eb5-run-YYYYMMDD` (today's date; reuse it for additional same-day runs, or add a short suffix / project
+   slug so nothing is clobbered). Write **every** artifact — `findings.json` (or `projN.json`), the rendered
+   HTML report, and any post-render enhancement script — **inside that folder** so each day's run is
+   self-contained (see the unique-output-filenames rule). PowerShell:
+   `$run="eb5-run-$(Get-Date -Format yyyyMMdd)"; New-Item -ItemType Directory -Force -Path $run`.
+1. Write the assembled object to `$run/findings.json` (validate mentally against
    `${CLAUDE_PLUGIN_ROOT}/schemas/findings.schema.json`; include `generated_at`).
 2. Render:
-   `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Findings findings.json -Out "<project>-eb5-report.html"`
+   `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Findings $run/findings.json -Out "$run/<project>-eb5-report.html"`
 3. Apply the **post-render enhancements** from `../eb5-report/SKILL.md`: a per-section **"Source
    documents (locally provided)"** block (from `project.source_documents`, or "none received"), and a
    pointed **owner-facing "Questions to ask in your 1:1"** section built from `data_gaps`, with **inline
