@@ -135,8 +135,9 @@ questions/footer is inserted before `<footer>`.
    resize closes it; flips up near the bottom edge) live in `assets/report-template.html`, so the report
    needs no per-file script and stays emailable/offline. Add a one-line "tap the info icon next to any
    term" tip near the legend. Implementation guards (important):
-   - Wrap **only text nodes** — split on tags and skip anything inside `<style>` / `<script>` and inside
-     tag attributes, or you will corrupt the CSS / links.
+   - Wrap **only text nodes** — split on tags and skip anything inside `<style>` / `<script>`, inside tag
+     attributes, and inside `<a>` link text (a `<button>` nested in an `<a>` is invalid nested-interactive
+     HTML and creates two competing click targets), or you will corrupt the CSS / links.
    - Use a **single longest-match-first** regex sub per text node (so already-injected markup isn't
      re-scanned), with `(?<![\w])…(?![\w])` boundaries so terms aren't matched inside other words.
    - The definition is the **text content** of `.ji-pop` (not an attribute) — **HTML-escape** `&`, `<`, `>`
