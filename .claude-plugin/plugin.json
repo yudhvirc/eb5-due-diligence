@@ -1,6 +1,6 @@
 {
   "name": "eb5-due-diligence",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Exhaustive, independent due diligence on EB-5 immigrant-investor projects (reserved category / $800K). Extracts every claim from issuer/attorney docs, re-verifies each against primary sources (USCIS, SEC EDGAR, PACER, Census/BLS), and produces a self-contained HTML report with separate Immigration and Financial Risk Scores, a Go/No-Go verdict, inline citations, a red-flag/data-gap log, and side-by-side comparison.",
   "keywords": ["eb5", "due-diligence", "immigration", "investment", "risk-analysis"]
 }
