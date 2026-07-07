@@ -61,7 +61,9 @@ escrow, I-526E/I-956F notices, investor decks, FAQs). Record which inputs were p
   `pdftotext -layout "<file>.pdf" "<out>.txt"` (the Read tool's PDF renderer needs `pdftoppm`, often
   missing on Windows; `pdftotext` is reliable). Note any image-only/scanned files that yield no text.
   Record the exact filenames in `project.source_documents`. Parse every **material assertion** into a
-  structured claim: RC id, I-956F status, job numbers/cushion, TEA basis, capital-stack %, collateral,
+  structured claim: RC id, I-956F status, job numbers/cushion **plus the job-model inputs needed to
+  re-derive them** (eligible spend and whether land is excluded, multipliers and their region/data year,
+  construction schedule, direct-vs-indirect split), TEA basis, capital-stack %, collateral,
   guarantees, fees, takeout, prior returns, etc.
 - For each, set `claim_text`, `source_of_claim` (e.g. "PPM p.42"), `factor`, and `verdict:"UNVERIFIABLE"`
   (pending). The issuer doc is the source of the *claim*, never a verifying *citation*.
