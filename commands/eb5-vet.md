@@ -21,13 +21,26 @@ Follow the orchestrator pipeline in `skills/eb5-due-diligence/SKILL.md`:
 3. **Parallel investigation** — fan out the six specialist sub-agents.
 4. **Adversarial pass** — run `redflag-adversary` to attack favorable claims and confirm contradictions.
 5. **Scoring** — apply `assets/scoring-rubric.json` per `skills/eb5-scoring/SKILL.md`.
-6. **Render** — write `findings.json` and run `scripts/render_report.ps1` to produce
-   `<project>-eb5-report.html` **(both inside today's `eb5-run-YYYYMMDD` folder)**, then apply the **post-render enhancements** from
-   `skills/eb5-report/SKILL.md`: a **"Source documents (locally provided)"** block listing the exact
-   filenames you read (or "none received"), and a pointed **owner-facing "Questions to ask in your 1:1"**
-   section built from the report's data gaps, with **inline blue/underlined shareable source links** and,
-   under **every** question, a plain-language **"What this means"** / **"Why it matters"** sub-line
-   (assume a non-expert reader; define EB-5 jargon).
+6. **Risk calibration** — per `skills/eb5-risk-calibration/SKILL.md`, attach to every red flag a
+   **probability band** (P0–P4), a **severity class** (S1–S4) and the deterministic **disposition**
+   (ACCEPT / CAUTION / MITIGATE / AVOID), classify any fired gate **structural vs curable**, and emit
+   `decision_summary`. This is an overlay — it never changes a score or promotes a gated verdict.
+   If the set-aside is **high-unemployment**, also work `skills/eb5-tea-hua/SKILL.md`: pin the tract from
+   the **JCE's recorded parcel** (never the marketing address), price the **full lawful grouping
+   universe** on the **filing-vintage ACS**, and produce the green-card **timeline** block.
+7. **Render** — write `findings.json` and run `scripts/render_report.ps1` to produce
+   `<project>-eb5-report.html` **(both inside today's `eb5-run-YYYYMMDD` folder)**, then apply the
+   house format with the **bundled** enhancer — do not hand-write a per-run script:
+   ```
+   python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html "$run/<project>-eb5-report.html" --findings $run/findings.json
+   ```
+   It is data-driven and idempotent, so put the content in `findings.json`: `project.source_documents`
+   (the exact filenames you read, or `[]`), `project.location`, the calibration fields on each red flag,
+   `decision_summary`, `timeline` (high-unemployment projects), and `questions` — each question carrying
+   a plain-language **"What this means"** (`means`) and **"Why it matters"** (`matters`) line written for
+   a non-expert, plus a `source_index` for an inline blue/underlined link. Omit `questions` and they are
+   generated from `data_gaps`. Add any new jargon to `assets/report-glossary.json`. Then run the output
+   checks in `skills/eb5-report/SKILL.md`.
 
 If documents are provided via `--ppm <file-or-folder>`, read **every** file first (extract text with
 `pdftotext -layout`; the Read tool's PDF path needs `pdftoppm`, often missing on Windows) and record the

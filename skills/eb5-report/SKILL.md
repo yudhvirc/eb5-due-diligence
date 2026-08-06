@@ -69,9 +69,32 @@ verification on their own (the core rule still holds: independently verify every
   project it belongs to.
 
 ## Post-render enhancements (apply after render_report.ps1)
-`render_report.ps1` is deterministic and does **not** emit these; apply them as a post-render
-augmentation (a small Python/PowerShell string-injection pass over the produced HTML). Keep each pass
-idempotent. The anchors are stable: per-project accordions are `<details class="acc">` whose body opens
+
+**Do not hand-write these — the plugin ships them.** `render_report.ps1` emits the deterministic
+skeleton; `${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py` layers on the house format:
+
+```
+python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html $run/<project>-eb5-report.html --findings $run/findings.json
+python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html $run/eb5-compare.html --findings $run/proj1.json,$run/proj2.json,$run/proj3.json
+```
+
+Pass the findings files in the **same order** given to `render_report.ps1`. Every pass is **idempotent**
+(each writes an HTML comment marker and is skipped if already present), so re-running over an
+already-enhanced file is safe. `--only` / `--skip` take a comma-separated pass list:
+`heatmap, srcdocs, location, keysources, timeline, disposition, onepager, questions, jargon`. `jargon`
+is always forced last so terms introduced by the other passes get icons too.
+
+**The content is data, not code.** Each pass reads `findings.json` plus two bundled assets —
+`assets/report-factors.json` (the 19 factor names + their plain-language "why it matters" lines) and
+`assets/report-glossary.json` (jargon surface form → one-sentence definition). To change what a report
+*says*, write better JSON or add a glossary term; do not fork the script per run. The optional
+`one_pager`, `questions`, `timeline` and `decision_summary` blocks in the schema exist precisely so the
+per-run editorial content is data.
+
+Everything below is the **specification** those passes implement — read it to know what the JSON must
+contain, and consult it if a report needs something the script does not yet cover. If you do extend the
+format, add the pass to the script rather than writing a one-off enhancer, so the next run inherits it.
+The anchors are stable: per-project accordions are `<details class="acc">` whose body opens
 `<div class="body">`; the comparison heatmap header cells are `<th class="num">I1</th>` … `F10`; the
 questions/footer is inserted before `<footer>`.
 
@@ -95,6 +118,11 @@ questions/footer is inserted before `<footer>`.
      USCIS rejects that block choice the investor can lose the $800K pricing and put the petition at risk.
      Avoid "tract bundle" / "gerrymandered" in the investor-facing note — say "hand-picked blocks." This
      prevents the common confusion where the county-data link shows a far lower number than the claimed %.
+   - **Do not label high-unemployment "shaky" when the investor has accepted that category, or when the
+     designation independently validates.** Keep the two questions separate (see `../eb5-tea-hua/SKILL.md`):
+     *is the designation valid* (an eligibility question that can reach hard gate G4) versus *is HUA
+     slower than rural* (a **timeline** question only). Where the designation validates, the TEA row
+     should say so and the cost belongs in the timeline panel below, not in the risk column.
    - End with a **"Bottom line"** rendered as **bullets — one per deal** (not a dense paragraph), then a
      one-line closing caution.
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
@@ -160,6 +188,81 @@ questions/footer is inserted before `<footer>`.
      FINRA / BrokerCheck / CRD, source-of-funds.
    - *How this report scores:* the 0–100 risk sub-score, the 0–3 confidence level, the hard gates
      (G1–G5), and Immigration vs Financial risk.
+
+8. **Green-card timeline panel (required for every high-unemployment project)** — a standalone panel,
+   sourced from `../eb5-tea-hua/SKILL.md` Part 2, that tells the reader in plain language what the HUA
+   category costs them **in time**. It must state, with run-time-current figures and links:
+   - **Pool size** — rural 20% of the ~10,000 annual EB-5 visas vs **high-unemployment 10%**;
+     infrastructure 2%. Unused reserved visas roll into the same category the next year, then unreserved.
+   - **Priority processing** — the RIA directs USCIS to prioritise **rural**; **HUA gets none**. This is
+     the biggest practical difference.
+   - **Where it actually bites** — most of rural's advantage lands at the **I-956F** stage, so **if this
+     project's I-956F is already approved that advantage is largely spent**; say so explicitly rather
+     than letting the headline overstate the remaining cost. The live difference for a new investor is at
+     the **I-526E** stage — quote the **current USCIS processing-times page** and label it a moving
+     number. **No category difference at I-829.**
+   - **Retrogression** — the smaller pool fills first; check the **current Visa Bulletin** for the
+     investor's chargeability area (material for **India / China**, usually not otherwise).
+   - **Two calendar items** — file the I-526E early, and file **before the designation window closes**;
+     render the computed **I-956F filing date + 2 years** as a hard date.
+   Place this panel next to the TEA discussion, and frame it as a **schedule disclosure, not a risk
+   finding** — the eligibility question lives in I4 and is scored there.
+9. **Risk disposition on every red flag** — where a finding carries the calibration fields from
+   `../eb5-risk-calibration/SKILL.md`, render them so a reader can triage in one pass:
+   - A **disposition chip** on each red flag — `ACCEPT` (muted/green), `CAUTION` (amber), `MITIGATE`
+     (amber, bolded), `AVOID` (red) — with the probability band and severity class as a small
+     `P2 · S4 · 20–50% likely · green-card-fatal` sub-line, and the `basis` (cited base rate, or
+     "judgment") beside it so an uncited band is visibly an estimate.
+   - For every **CAUTION / MITIGATE**, print the `mitigation` string as an **action line** — the exact
+     document or written change to request. Never render a MITIGATE without one.
+   - A **"What you can live with" panel** near the top, built from `decision_summary`: the `one_line`,
+     then three short lists — **Must clear before wiring**, **Acceptable as-is** (state plainly that
+     these should *not* delay the decision), and **Cannot be resolved in time** (what the reader is
+     accepting if they proceed anyway).
+   - Where a hard gate fired, show its **`gate_class`** — *structural* (a wall) or *curable* (the
+     opening of a negotiation), G5 split into G5-doc / G5-fact. Keep the verdict itself at NO-GO; the
+     class tells the reader what to do, it never promotes the verdict.
+   - In a **comparison**, add a **residual-risk ordering** beneath the immigration-first ranking whenever
+     the two differ — ranking by what remains after obtainable mitigations — with a one-line explanation
+     of why they differ.
+
+**Ordering:** enhancement 7 (inline jargon icons) always runs **last**, after 8 and 9, so the terms
+introduced by the new panels get icons too. `enhance_report.py` enforces this regardless of `--only`
+order.
+
+## Colour coding (non-negotiable)
+
+**Colour encodes absolute quality. Being the best of a set never earns a quality colour.**
+
+A comparison always has a leftmost column, and in a bad field that column is still bad. If "best in
+row" is painted green, a NO-GO that happens to be the least-bad option reads as a pass — which is the
+single most misleading thing this report could do.
+
+- **Green (`--go`)** — genuinely good in absolute terms. **Amber (`--cond`)** — caution. **Red
+  (`--nogo`)** — bad. Risk scores band at **≤35 / 36–60 / >60**, matching the verdict matrix.
+- **Rank is blue** (`--accent`), never green: a thin inset bar on the better one-pager cell, and the
+  `.best` outline in the summary matrix. Blue means *best of this set*, which is not the same as good.
+- `enhance_report.py` enforces this mechanically for the two cases it can detect: a cell containing a
+  **verdict** (GO / CONDITIONAL / NO-GO) or an **`N/100` risk score** is coloured from its own value and
+  ignores `good` for colour, taking the rank marker instead.
+- For every other cell, `good: true` is the author's assertion that the value **is genuinely
+  favourable**, not merely better than the other column. Do not set it on a mixed or partly-negative
+  cell — "3 of 4 sites verified, the fourth fails" is not a green cell.
+- Every colour already carried by the renderer is absolute and must stay that way: verdict chips, the
+  heatmap `ScoreColor` ramp, gauge bars, severity dots, and the disposition chips (ACCEPT green /
+  CAUTION amber / MITIGATE orange / AVOID red).
+- The one-pager carries a visible **colour key** stating all of this, so the reader never has to infer it.
+
+## Checking the output
+After enhancing, verify (the script's own summary line reports which passes applied — a pass that
+silently no-ops usually means the JSON block it reads is missing):
+- **Tag balance** — `<div>`/`<span>`/`<details>`/`<table>` open and close counts match.
+- **The `<style>` block is untouched** — no `<span class="jt">` before the first `</style>`. A jargon
+  pass that leaked into the CSS corrupts the whole report.
+- **No `<button>` inside an `<a>`** — nested interactive elements are invalid and create two competing
+  click targets.
+- **Each term wrapped once** — a term should appear with an icon on its first occurrence only.
+- **Re-running changes nothing** — the byte count after a second run must be identical.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.
