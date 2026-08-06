@@ -42,11 +42,25 @@ source links** — and, under **every** question, a plain-language **"What this 
 matters"** sub-line (assume a non-expert reader; define EB-5 jargon); (4) the **heatmap legend +
 I1–F10 hover tooltips**; and (5) **source links in every verdict-colored area** — a "Key sources for
 this verdict" block under each project's banner, links in the summary-matrix verdict cells, and inline
-links on the one-page summary's yellow/red claim cells.
+links on the one-page summary's yellow/red claim cells; (6) **disposition chips** on every red flag plus
+a per-project **"What you can live with"** panel (must-clear-before-wiring / acceptable-as-is /
+cannot-be-resolved-in-time), from `skills/eb5-risk-calibration/SKILL.md`; and (7) for every
+**high-unemployment** project, the **green-card timeline panel** from `skills/eb5-tea-hua/SKILL.md`.
+
+**Calibrate before you rank.** Run `skills/eb5-risk-calibration/SKILL.md` over each project's red flags —
+probability band × severity class → ACCEPT / CAUTION / MITIGATE / AVOID — and classify any fired gate
+**structural** (a wall) or **curable** (the opening of a negotiation). Every real offering has defects;
+the value of a comparison is separating the few that should stop a decision from the many that should be
+noted and moved past. Do not label a **high-unemployment** TEA a defect where the designation
+independently validates — that cost is a **timeline** matter and belongs in the timeline panel.
 
 Give the user a short ranking with the key trade-offs and the path to the report
 (`<run-folder>/eb5-compare.html`). **Rank
 immigration-first:** order projects by the immigration composite (lower = better), with financial risk as
 the secondary tiebreaker — de-risking the green card is the primary objective, capital protection comes
-after (see `skills/eb5-scoring/SKILL.md` → "Priority: immigration first, financial second"). Keep the
+after (see `skills/eb5-scoring/SKILL.md` → "Priority: immigration first, financial second"). When the
+user is deciding under a **deadline**, also give the **residual-risk ordering** (rank by what remains
+after obtainable mitigations) wherever it differs from the raw one, and say in a line why. If every
+candidate calibrates to AVOID, say "none of these" plus what to look for next — do not present a
+least-bad pick as viable. Keep the
 core rule in force for every project: independently verify; never trust issuer/attorney paper.

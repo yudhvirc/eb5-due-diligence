@@ -23,6 +23,15 @@ re-verified; unverifiable claims are penalized and flagged, never silently trust
 Plugin root is available as `${CLAUDE_PLUGIN_ROOT}`. Read the rubric before scoring:
 `${CLAUDE_PLUGIN_ROOT}/assets/scoring-rubric.json`, `source-tiers.json`,
 `verification-checklist.json`, and the methodology in `../eb5-scoring/SKILL.md`.
+Also load `../eb5-risk-calibration/SKILL.md` (every run) and `../eb5-tea-hua/SKILL.md` (whenever the
+set-aside is high-unemployment).
+
+**Second principle, alongside the first: every real offering has defects.** An investor choosing among
+live deals on a deadline cannot wait for a clean one. Listing forty problems without ranking them by
+consequence pushes the hard work back onto the reader. So separate the findings that should genuinely
+stop a decision from the many that should be noted and moved past — that is what the calibration overlay
+in Phase 4b exists to do. Sizing survivable problems realistically is **not** the same as softening a
+structural gate; never do the second in the name of the first.
 
 ## Inputs
 The user may provide any mix of: a **project / RC name**, a **website URL** (`--website`), and/or
@@ -107,6 +116,21 @@ Follow `../eb5-scoring/SKILL.md` exactly:
    the evidence; leave `manual` items as `manual`.
 7. Deduplicate all citations into `sources[]` (preserve tier, is_issuer, accessed date).
 
+### Phase 4b — Risk calibration (always run)
+Apply `../eb5-risk-calibration/SKILL.md` to the merged red flags. For each: a **probability band**
+(P0–P4, anchored to a cited base rate where one exists — USCIS I-526E/I-956F outcomes, RC termination
+counts, processing times — and labelled `judgment` where none does), a **severity class** (S1–S4), and
+the **disposition** read deterministically off that skill's grid (ACCEPT / CAUTION / MITIGATE / AVOID).
+Every CAUTION and MITIGATE needs a concrete `mitigation` an individual investor can actually obtain
+before wiring. Classify any fired gate as **structural or curable** (`gate_class`; G5 splits into
+G5-doc / G5-fact) and emit the top-level `decision_summary`.
+
+The overlay is **advisory** — it never changes a sub-score, a composite, or a gate verdict. A fired hard
+gate stays NO-GO. If the user has stated a deadline or asked for a realistic read, also apply that
+skill's **time-pressure protocol**: confirm the six-check irreducible verification set was completed,
+say in the report which findings must **not** be allowed to delay the decision, and rank by **residual**
+risk (after obtainable mitigations) alongside the raw immigration-first ranking whenever the two differ.
+
 ### Phase 5 — Render
 0. **Create today's run folder.** Make a **new dated output folder** in the working directory,
    `eb5-run-YYYYMMDD` (today's date; reuse it for additional same-day runs, or add a short suffix / project
@@ -121,8 +145,10 @@ Follow `../eb5-scoring/SKILL.md` exactly:
 3. Apply the **post-render enhancements** from `../eb5-report/SKILL.md`: a per-section **"Source
    documents (locally provided)"** block (from `project.source_documents`, or "none received"), and a
    pointed **owner-facing "Questions to ask in your 1:1"** section built from `data_gaps`, with **inline
-   blue/underlined shareable source links**. (Comparisons additionally get the one-page summary and the
-   heatmap legend/tooltips — see `commands/eb5-compare.md`.)
+   blue/underlined shareable source links**. Also required: the **disposition chips + "What you can live
+   with" panel** (enhancement 9) on every run, and for a high-unemployment project the **green-card
+   timeline panel** (enhancement 8). (Comparisons additionally get the one-page summary and the heatmap
+   legend/tooltips — see `commands/eb5-compare.md`.)
 4. Tell the user the output path and give a 3-line summary (verdict + the two scores + top red flag).
    Do **not** restate the whole report in chat.
 

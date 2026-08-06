@@ -155,10 +155,23 @@ resolved once and reused. The bundled `rc_data.json` snapshot is never modified.
    claims and confirm any contradictions with a second source.
 5. **Scoring** — weighted rubric (`assets/scoring-rubric.json`) → two scores + verdict,
    with an *uncertainty surcharge* that worsens scores built only on issuer paper.
-6. **Render** — `render_report.ps1` turns the findings JSON into the HTML report.
+6. **Risk calibration** — every red flag gets a **probability band** (P0–P4), a **severity
+   class** (S1–S4) and a deterministic disposition: **ACCEPT / CAUTION / MITIGATE / AVOID**.
+   Fired hard gates are classified **structural** (a wall) vs **curable** (the opening of a
+   negotiation). Every real EB-5 offering has defects, so the point is to separate the few
+   findings that should stop a decision from the many that should be noted and moved past —
+   without ever softening a structural gate. Includes a **time-pressure protocol** for
+   investors choosing among live deals on a deadline: an irreducible six-check verification
+   set, an explicit "these must not delay your decision" list, and a **residual-risk**
+   ranking alongside the raw one.
+7. **Render** — `render_report.ps1` turns the findings JSON into the HTML report.
 
-See `skills/eb5-due-diligence/SKILL.md` for the full orchestration spec and
-`skills/eb5-scoring/SKILL.md` for the scoring methodology.
+See `skills/eb5-due-diligence/SKILL.md` for the full orchestration spec,
+`skills/eb5-scoring/SKILL.md` for the scoring methodology,
+`skills/eb5-risk-calibration/SKILL.md` for the probability/severity/disposition model, and
+`skills/eb5-tea-hua/SKILL.md` for **high-unemployment TEA** validation (parcel-anchored tract
+identification, the bounded lawful-grouping test, ACS vintage and designation-expiry rules)
+plus the **green-card timeline** effects of high-unemployment vs rural.
 
 ---
 

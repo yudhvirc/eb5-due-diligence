@@ -1,6 +1,6 @@
 {
   "$schema_note": "Single source of truth for EB-5 risk scoring. Read by skills/eb5-scoring/SKILL.md (to compute) and scripts/render_report.ps1 (to render). Scores are 0 = lowest risk (best) .. 100 = highest risk (worst).",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "score_direction": "0_is_best_100_is_worst",
   "confidence_scale": {
     "3": "High — primary government or court record (USCIS RC list/termination, I-956F notice, SEC EDGAR filing, PACER docket).",
@@ -54,11 +54,77 @@
     },
     "conditional_requirement": "Every CONDITIONAL verdict must enumerate the specific conditions that would move it to GO."
   },
+  "g4_evidence_standard": "G4 requires AFFIRMATIVE DISPROOF, not an unresolved gap. Enumerate the full bounded grouping universe (site tract + directly adjacent tracts) on the ACS vintage current at the I-956F filing date and show the MAXIMUM falls short. Could-not-reproduce is a data gap; clears-only-on-corner-point-adjacency or a post-filing vintage is fragile, not a gate. See skills/eb5-tea-hua/SKILL.md.",
   "hard_gates": [
-    { "id": "G1", "name": "RC terminated or debarred", "trigger": "Regional center appears on the USCIS termination list or principals are debarred.", "result": "NO-GO" },
-    { "id": "G2", "name": "I-956F denied or withdrawn", "trigger": "The project's I-956F was denied or withdrawn.", "result": "NO-GO" },
-    { "id": "G3", "name": "SEC / fraud enforcement vs principals", "trigger": "An SEC enforcement action, fraud injunction, or criminal action against the principals/sponsor.", "result": "NO-GO" },
-    { "id": "G4", "name": "Proven TEA / set-aside misqualification", "trigger": "The reserved-category set-aside is provably invalid or expired.", "result": "NO-GO" },
-    { "id": "G5", "name": "Confirmed material misrepresentation", "trigger": "A material claim is CONTRADICTED and the adversarial pass confirms it with a second independent source.", "result": "NO-GO" }
-  ]
+    { "id": "G1", "gate_class": "structural", "gate_class_note": "Nothing the investor or sponsor can do inside a decision window.", "name": "RC terminated or debarred", "trigger": "Regional center appears on the USCIS termination list or principals are debarred.", "result": "NO-GO" },
+    { "id": "G2", "gate_class": "structural", "gate_class_note": "A refiling is a new project on a new clock, not a cure for this decision.", "name": "I-956F denied or withdrawn", "trigger": "The project's I-956F was denied or withdrawn.", "result": "NO-GO" },
+    { "id": "G3", "gate_class": "structural", "gate_class_note": "Goes to the principals, not the paperwork.", "name": "SEC / fraud enforcement vs principals", "trigger": "An SEC enforcement action, fraud injunction, or criminal action against the principals/sponsor.", "result": "NO-GO" },
+    { "id": "G4", "gate_class": "structural", "gate_class_note": "The $800,000 price is fixed by the record as of filing and cannot be repaired retroactively; an amended/refiled I-956F on a valid basis resets the clock (a different deal, not a cure).", "name": "Proven TEA / set-aside misqualification", "trigger": "The reserved-category set-aside is provably invalid or expired.", "result": "NO-GO" },
+    { "id": "G5", "gate_class": "split", "gate_class_note": "Classify as G5-doc (a document was mischaracterised - potentially curable, the sponsor can produce the real document) or G5-fact (a state of the world was misstated - not curable by explanation). Curability never promotes the verdict; a fired gate is always NO-GO.", "name": "Confirmed material misrepresentation", "trigger": "A material claim is CONTRADICTED and the adversarial pass confirms it with a second independent source.", "result": "NO-GO" }
+  ],
+  "risk_calibration": {
+    "note": "Advisory OVERLAY, never an override. It does not change any subscore, composite, or gate verdict; a fired hard gate always keeps the verdict at NO-GO. Full method in skills/eb5-risk-calibration/SKILL.md. Purpose: every real EB-5 offering has defects, so separate the few findings that should stop a decision from the many that should be noted and moved past.",
+    "probability_bands": {
+      "P4": ">80% near-certain - already true on the record, not a forecast",
+      "P3": "50-80% likely",
+      "P2": "20-50% realistic - a regularly observed failure mode for this structure",
+      "P1": "5-20% unlikely - needs an additional adverse event",
+      "P0": "<5% remote"
+    },
+    "probability_basis_rule": "Anchor each band to a cited base rate where one exists (USCIS I-526E/I-956F outcomes, RC terminations vs approvals, processing times). Where none exists, record basis='judgment - no published base rate'. An uncited band must be visibly an estimate.",
+    "data_gap_vs_defect": "Ask whether evidence would exist if the claim were true. Probative absence (no I-797C for a claimed approval; no permits for a project marketed as under construction) is scored. Non-probative absence (no Form D where Reg S/506(b) applies; no third-party guaranty, which most EB-5 deals lack) is not a finding.",
+    "severity_classes": {
+      "S4": "Green-card fatal or total loss of the $800,000",
+      "S3": "Severe - RFE/NOID with real denial risk, multi-year delay, or majority capital loss",
+      "S2": "Moderate - recoverable delay, redeployment, or partial impairment",
+      "S1": "Minor - cost or friction only; does not change the outcome"
+    },
+    "disposition_grid": {
+      "S4": {
+        "P0": "CAUTION",
+        "P1": "MITIGATE",
+        "P2": "AVOID",
+        "P3": "AVOID",
+        "P4": "AVOID"
+      },
+      "S3": {
+        "P0": "ACCEPT",
+        "P1": "CAUTION",
+        "P2": "MITIGATE",
+        "P3": "AVOID",
+        "P4": "AVOID"
+      },
+      "S2": {
+        "P0": "ACCEPT",
+        "P1": "ACCEPT",
+        "P2": "CAUTION",
+        "P3": "MITIGATE",
+        "P4": "MITIGATE"
+      },
+      "S1": {
+        "P0": "ACCEPT",
+        "P1": "ACCEPT",
+        "P2": "ACCEPT",
+        "P3": "ACCEPT",
+        "P4": "ACCEPT"
+      }
+    },
+    "dispositions": {
+      "ACCEPT": "Note it and move on. This finding must NOT be allowed to delay the decision - say so in the report.",
+      "CAUTION": "Proceed, but complete one named check that can actually be finished before wiring.",
+      "MITIGATE": "Proceed only on obtaining a specific written change or document. A refusal to put in writing something asserted verbally is itself a finding and normally raises the probability band by one.",
+      "AVOID": "No investor-level mitigation exists."
+    },
+    "mitigation_rule": "Every CAUTION/MITIGATE must carry a concrete mitigation obtainable by an individual investor before closing. 'Ask the sponsor to be more transparent' is not a mitigation; 'require escrow release on I-526E approval rather than filing' is.",
+    "irreducible_verification_set": [
+      "Regional center on the live USCIS approved list, absent from terminations, approved for the project's STATE, matched by RC ID (not name)",
+      "The actual I-797C receipt/approval notice for the I-956F - read the notice, not the representation about it",
+      "TEA re-derived from the JCE's RECORDED PARCEL (never a geocoded address or intersection)",
+      "Escrow: which event releases the money - filing vs approval are different products at the same price",
+      "Capital stack: does sources = uses, who sits ahead of the EB-5 money, and what happens if the raise is not completed",
+      "Job cushion at the ACTUAL investor count, with the statutory indirect cap and construction-duration proration applied"
+    ],
+    "time_pressure_protocol": "When the user states a deadline or asks for a realistic read: complete the irreducible set; state which findings must not delay the decision; rank by RESIDUAL risk (after obtainable mitigations) alongside the raw immigration-first ranking whenever the two differ; and state plainly what cannot be resolved before the deadline and what proceeding accepts. Realism sizes survivable problems - it never softens a structural gate. If every candidate is AVOID, the honest output is 'none of these'.",
+    "residual_verdict_rule": "residual_verdict may differ from verdict only by being WORSE, or by moving within the CONDITIONAL band once mitigations are applied. A fired hard gate always keeps verdict at NO-GO; express curability via gate_class, never by promoting the verdict."
+  }
 }

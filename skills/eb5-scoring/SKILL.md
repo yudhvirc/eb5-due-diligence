@@ -49,6 +49,17 @@ G4 proven TEA/set-aside misqualification · G5 confirmed material misrepresentat
 material claim **confirmed by a second independent source** in the adversarial pass). When a gate fires,
 set its related factor sub-score to 100.
 
+**G4 requires affirmative disproof, not an unresolved gap.** "I could not reproduce the TEA" is a data
+gap; "I enumerated every grouping the statute permits and the maximum reaches 145.9% of the threshold"
+is a gate. See `../eb5-tea-hua/SKILL.md` for the bounded-universe method that makes this distinction
+operable.
+
+**Also classify every fired gate as structural or curable** (`gate_class`) — a NO-GO on a curable gate
+is the opening of a negotiation, a NO-GO on a structural gate is a wall. G1–G4 are structural; G5 splits
+into **G5-doc** (potentially curable — the sponsor can produce the real document) and **G5-fact** (not
+curable by explanation). Full table in `../eb5-risk-calibration/SKILL.md`. Classification never changes
+the verdict — a fired gate is always NO-GO — it tells the reader what to do about it.
+
 ## Priority: immigration first, financial second
 **Immigration de-risking is the PRIMARY objective** (protecting the green card); **financial risk is SECONDARY** (protecting capital). This drives two rules:
 - **Verdict:** the immigration band gates the outcome. Financial risk **alone never forces a NO-GO** when immigration risk is *low* — such a deal is **CONDITIONAL** with the financial problems listed as `conditions_to_clear`. Immigration risk that is *high* is always a NO-GO.
@@ -69,6 +80,21 @@ Overrides:
 - Any confirmed hard gate → **NO-GO**.
 - Overall `avg_confidence < 1.5` → cap the verdict at **CONDITIONAL** and set `limited_by_data_gaps`.
 - Every **CONDITIONAL** must enumerate `conditions_to_clear` (the specific items that would move it to GO).
+
+## Risk calibration overlay (required — run it after scoring)
+The composites answer *"how bad is this deal?"* They do not answer *"is **this** problem likely to hurt
+me, how badly, and can I proceed anyway?"* After computing the scores and the verdict, run
+`../eb5-risk-calibration/SKILL.md` over the red flags to attach, for each one, a **probability band**
+(P0–P4), a **severity class** (S1–S4) and the deterministic **disposition** (ACCEPT / CAUTION /
+MITIGATE / AVOID) read off that skill's grid — plus a `decision_summary` separating what must be cleared
+before wiring from what is acceptable as-is.
+
+Two rules keep the overlay honest:
+- **It is an overlay, never an override.** It does not change a sub-score, a composite, or a gate
+  verdict. `residual_verdict` may only differ from `verdict` by being *worse*, or by moving within the
+  CONDITIONAL band once mitigations are applied. **A fired hard gate always keeps the verdict at NO-GO.**
+- **Realism sizes the survivable problems; it never softens a structural gate.** If every candidate
+  calibrates to AVOID, the honest output is "none of these" — not a least-bad pick presented as viable.
 
 ## Worked sketch
 If immigration weighted_base = 28 and imm avg_confidence = 2.0 → surcharge = round((1−0.667)×12)=4 →

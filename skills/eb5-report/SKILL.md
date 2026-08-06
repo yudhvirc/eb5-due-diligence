@@ -95,6 +95,11 @@ questions/footer is inserted before `<footer>`.
      USCIS rejects that block choice the investor can lose the $800K pricing and put the petition at risk.
      Avoid "tract bundle" / "gerrymandered" in the investor-facing note — say "hand-picked blocks." This
      prevents the common confusion where the county-data link shows a far lower number than the claimed %.
+   - **Do not label high-unemployment "shaky" when the investor has accepted that category, or when the
+     designation independently validates.** Keep the two questions separate (see `../eb5-tea-hua/SKILL.md`):
+     *is the designation valid* (an eligibility question that can reach hard gate G4) versus *is HUA
+     slower than rural* (a **timeline** question only). Where the designation validates, the TEA row
+     should say so and the cost belongs in the timeline panel below, not in the risk column.
    - End with a **"Bottom line"** rendered as **bullets — one per deal** (not a dense paragraph), then a
      one-line closing caution.
 3. **Questions for the meeting** — a section of pointed, **owner-facing 1:1 questions**, one accordion
@@ -160,6 +165,46 @@ questions/footer is inserted before `<footer>`.
      FINRA / BrokerCheck / CRD, source-of-funds.
    - *How this report scores:* the 0–100 risk sub-score, the 0–3 confidence level, the hard gates
      (G1–G5), and Immigration vs Financial risk.
+
+8. **Green-card timeline panel (required for every high-unemployment project)** — a standalone panel,
+   sourced from `../eb5-tea-hua/SKILL.md` Part 2, that tells the reader in plain language what the HUA
+   category costs them **in time**. It must state, with run-time-current figures and links:
+   - **Pool size** — rural 20% of the ~10,000 annual EB-5 visas vs **high-unemployment 10%**;
+     infrastructure 2%. Unused reserved visas roll into the same category the next year, then unreserved.
+   - **Priority processing** — the RIA directs USCIS to prioritise **rural**; **HUA gets none**. This is
+     the biggest practical difference.
+   - **Where it actually bites** — most of rural's advantage lands at the **I-956F** stage, so **if this
+     project's I-956F is already approved that advantage is largely spent**; say so explicitly rather
+     than letting the headline overstate the remaining cost. The live difference for a new investor is at
+     the **I-526E** stage — quote the **current USCIS processing-times page** and label it a moving
+     number. **No category difference at I-829.**
+   - **Retrogression** — the smaller pool fills first; check the **current Visa Bulletin** for the
+     investor's chargeability area (material for **India / China**, usually not otherwise).
+   - **Two calendar items** — file the I-526E early, and file **before the designation window closes**;
+     render the computed **I-956F filing date + 2 years** as a hard date.
+   Place this panel next to the TEA discussion, and frame it as a **schedule disclosure, not a risk
+   finding** — the eligibility question lives in I4 and is scored there.
+9. **Risk disposition on every red flag** — where a finding carries the calibration fields from
+   `../eb5-risk-calibration/SKILL.md`, render them so a reader can triage in one pass:
+   - A **disposition chip** on each red flag — `ACCEPT` (muted/green), `CAUTION` (amber), `MITIGATE`
+     (amber, bolded), `AVOID` (red) — with the probability band and severity class as a small
+     `P2 · S4 · 20–50% likely · green-card-fatal` sub-line, and the `basis` (cited base rate, or
+     "judgment") beside it so an uncited band is visibly an estimate.
+   - For every **CAUTION / MITIGATE**, print the `mitigation` string as an **action line** — the exact
+     document or written change to request. Never render a MITIGATE without one.
+   - A **"What you can live with" panel** near the top, built from `decision_summary`: the `one_line`,
+     then three short lists — **Must clear before wiring**, **Acceptable as-is** (state plainly that
+     these should *not* delay the decision), and **Cannot be resolved in time** (what the reader is
+     accepting if they proceed anyway).
+   - Where a hard gate fired, show its **`gate_class`** — *structural* (a wall) or *curable* (the
+     opening of a negotiation), G5 split into G5-doc / G5-fact. Keep the verdict itself at NO-GO; the
+     class tells the reader what to do, it never promotes the verdict.
+   - In a **comparison**, add a **residual-risk ordering** beneath the immigration-first ranking whenever
+     the two differ — ranking by what remains after obtainable mitigations — with a one-line explanation
+     of why they differ.
+
+**Ordering:** enhancement 7 (inline jargon icons) always runs **last**, after 8 and 9, so the terms
+introduced by the new panels get icons too.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.

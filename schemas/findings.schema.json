@@ -4,45 +4,131 @@
   "description": "Full output of one /eb5-vet run. Consumed by scripts/render_report.ps1 to produce the HTML report.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "project", "scores", "verdict", "factors", "claims", "red_flags", "data_gaps", "checklist", "sources"],
+  "required": [
+    "schema_version",
+    "project",
+    "scores",
+    "verdict",
+    "factors",
+    "claims",
+    "red_flags",
+    "data_gaps",
+    "checklist",
+    "sources"
+  ],
   "properties": {
-    "schema_version": { "type": "string", "const": "0.1.0" },
-    "generated_at": { "type": "string", "description": "ISO datetime the report was generated (stamped by the orchestrator/script)." },
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO datetime the report was generated (stamped by the orchestrator/script)."
+    },
     "project": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "regional_center": { "type": "string" },
-        "regional_center_id": { "type": "string", "description": "USCIS RC ID, e.g. RC2200000751." },
-        "rc_state": { "type": "string" },
-        "rc_website": { "type": "string" },
-        "set_aside_category": { "type": "string", "enum": ["rural", "high-unemployment", "infrastructure", "unknown"] },
-        "amount_usd": { "type": "integer", "default": 800000 },
-        "inputs_provided": { "type": "array", "items": { "type": "string" }, "description": "e.g. ['ppm','website','name','rc_data.json']" }
+        "name": {
+          "type": "string"
+        },
+        "regional_center": {
+          "type": "string"
+        },
+        "regional_center_id": {
+          "type": "string",
+          "description": "USCIS RC ID, e.g. RC2200000751."
+        },
+        "rc_state": {
+          "type": "string"
+        },
+        "rc_website": {
+          "type": "string"
+        },
+        "set_aside_category": {
+          "type": "string",
+          "enum": [
+            "rural",
+            "high-unemployment",
+            "infrastructure",
+            "unknown"
+          ]
+        },
+        "amount_usd": {
+          "type": "integer",
+          "default": 800000
+        },
+        "inputs_provided": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "e.g. ['ppm','website','name','rc_data.json']"
+        }
       }
     },
     "scores": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["immigration", "financial"],
+      "required": [
+        "immigration",
+        "financial"
+      ],
       "properties": {
-        "immigration": { "$ref": "#/definitions/scoreBlock" },
-        "financial": { "$ref": "#/definitions/scoreBlock" },
-        "avg_confidence": { "type": "number", "minimum": 0, "maximum": 3, "description": "Overall average per-factor confidence across both scores." }
+        "immigration": {
+          "$ref": "#/definitions/scoreBlock"
+        },
+        "financial": {
+          "$ref": "#/definitions/scoreBlock"
+        },
+        "avg_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Overall average per-factor confidence across both scores."
+        }
       }
     },
     "verdict": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["decision", "rationale"],
+      "required": [
+        "decision",
+        "rationale"
+      ],
       "properties": {
-        "decision": { "type": "string", "enum": ["GO", "CONDITIONAL", "NO-GO"] },
-        "rationale": { "type": "string" },
-        "limited_by_data_gaps": { "type": "boolean", "default": false },
-        "hard_gates_triggered": { "type": "array", "items": { "type": "string" }, "description": "Gate ids from the rubric, e.g. ['G1']." },
-        "conditions_to_clear": { "type": "array", "items": { "type": "string" }, "description": "Required when decision is CONDITIONAL." }
+        "decision": {
+          "type": "string",
+          "enum": [
+            "GO",
+            "CONDITIONAL",
+            "NO-GO"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "limited_by_data_gaps": {
+          "type": "boolean",
+          "default": false
+        },
+        "hard_gates_triggered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Gate ids from the rubric, e.g. ['G1']."
+        },
+        "conditions_to_clear": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required when decision is CONDITIONAL."
+        }
       }
     },
     "factors": {
@@ -51,32 +137,130 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "weight", "subscore", "confidence"],
+        "required": [
+          "id",
+          "name",
+          "weight",
+          "subscore",
+          "confidence"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "weight": { "type": "number" },
-          "subscore": { "type": "integer", "minimum": 0, "maximum": 100 },
-          "confidence": { "type": "integer", "minimum": 0, "maximum": 3 },
-          "summary": { "type": "string" },
-          "claim_ids": { "type": "array", "items": { "type": "string" } }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "subscore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "summary": {
+            "type": "string"
+          },
+          "claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       }
     },
-    "claims": { "type": "array", "items": { "$ref": "claim.schema.json" } },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "claim.schema.json"
+      }
+    },
     "red_flags": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["severity", "title", "detail"],
+        "required": [
+          "severity",
+          "title",
+          "detail"
+        ],
         "properties": {
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
-          "title": { "type": "string" },
-          "detail": { "type": "string" },
-          "issuer_framing": { "type": "string", "description": "What the issuer says vs what was found." },
-          "factor": { "type": "string" },
-          "source_indices": { "type": "array", "items": { "type": "integer" }, "description": "1-based indices into sources[]." }
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "issuer_framing": {
+            "type": "string",
+            "description": "What the issuer says vs what was found."
+          },
+          "factor": {
+            "type": "string"
+          },
+          "source_indices": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "1-based indices into sources[]."
+          },
+          "probability": {
+            "type": "string",
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "description": "Likelihood the ADVERSE OUTCOME materialises (not that the fact is true). See assets/scoring-rubric.json -> risk_calibration."
+          },
+          "severity_class": {
+            "type": "string",
+            "enum": [
+              "S1",
+              "S2",
+              "S3",
+              "S4"
+            ],
+            "description": "Consequence if it materialises. S4 = green-card fatal or total loss."
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "ACCEPT",
+              "CAUTION",
+              "MITIGATE",
+              "AVOID"
+            ],
+            "description": "Read deterministically off the probability x severity grid in risk_calibration.disposition_grid."
+          },
+          "mitigation": {
+            "type": "string",
+            "description": "The specific document or written change to obtain before wiring. Required for CAUTION and MITIGATE."
+          },
+          "basis": {
+            "type": "string",
+            "description": "Cited base rate supporting the probability band, or 'judgment - no published base rate'."
+          }
         }
       }
     },
@@ -85,12 +269,27 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["item", "why", "closes_with"],
+        "required": [
+          "item",
+          "why",
+          "closes_with"
+        ],
         "properties": {
-          "item": { "type": "string", "description": "What could not be verified." },
-          "why": { "type": "string", "description": "Why it could not be verified." },
-          "closes_with": { "type": "string", "description": "What document/source would close the gap." },
-          "factor": { "type": "string" }
+          "item": {
+            "type": "string",
+            "description": "What could not be verified."
+          },
+          "why": {
+            "type": "string",
+            "description": "Why it could not be verified."
+          },
+          "closes_with": {
+            "type": "string",
+            "description": "What document/source would close the gap."
+          },
+          "factor": {
+            "type": "string"
+          }
         }
       }
     },
@@ -99,13 +298,37 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "text", "status"],
+        "required": [
+          "id",
+          "text",
+          "status"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "category": { "type": "string" },
-          "type": { "type": "string", "enum": ["auto", "manual"] },
-          "text": { "type": "string" },
-          "status": { "type": "string", "enum": ["pass", "fail", "unknown", "manual"] }
+          "id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "manual"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "unknown",
+              "manual"
+            ]
+          }
         }
       }
     },
@@ -115,13 +338,122 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["tier", "title", "url"],
+        "required": [
+          "tier",
+          "title",
+          "url"
+        ],
         "properties": {
-          "tier": { "type": "integer", "minimum": 0, "maximum": 3 },
-          "title": { "type": "string" },
-          "url": { "type": "string" },
-          "accessed": { "type": "string" },
-          "is_issuer": { "type": "boolean", "default": false }
+          "tier": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "accessed": {
+            "type": "string"
+          },
+          "is_issuer": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "decision_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Decision-grade overlay from skills/eb5-risk-calibration/SKILL.md. Advisory: never overrides verdict or a hard gate.",
+      "properties": {
+        "residual_verdict": {
+          "type": "string",
+          "enum": [
+            "GO",
+            "CONDITIONAL",
+            "NO-GO"
+          ]
+        },
+        "gate_class": {
+          "type": "string",
+          "enum": [
+            "structural",
+            "curable",
+            "none"
+          ]
+        },
+        "gate_detail": {
+          "type": "string",
+          "description": "For G5, which sub-class: G5-doc or G5-fact."
+        },
+        "must_clear_before_wiring": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "acceptable_as_is": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Findings that must NOT be allowed to delay the decision."
+        },
+        "cannot_be_resolved_in_time": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "one_line": {
+          "type": "string"
+        }
+      }
+    },
+    "timeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Green-card timeline panel inputs. Required for high-unemployment projects. See skills/eb5-tea-hua/SKILL.md Part 2. This is a SCHEDULE disclosure, not a risk finding.",
+      "properties": {
+        "set_aside": {
+          "type": "string",
+          "enum": [
+            "rural",
+            "high-unemployment",
+            "infrastructure",
+            "none"
+          ]
+        },
+        "visa_pool_pct": {
+          "type": "number",
+          "description": "20 rural, 10 high-unemployment, 2 infrastructure."
+        },
+        "priority_processing": {
+          "type": "boolean",
+          "description": "The RIA directs priority processing for rural only."
+        },
+        "i956f_already_approved": {
+          "type": "boolean",
+          "description": "If true, most of rural's advantage is already spent - say so rather than overstating the remaining cost."
+        },
+        "i526e_stage_spread": {
+          "type": "string",
+          "description": "Quoted from the current USCIS processing-times page; label it a moving number."
+        },
+        "file_by": {
+          "type": "string",
+          "description": "I-956F filing date + 2 years - the designation-window deadline, as a hard calendar item."
+        },
+        "chargeability_caveat": {
+          "type": "string",
+          "description": "Current Visa Bulletin position for the investor's chargeability area (material for India/China)."
+        },
+        "notes": {
+          "type": "string"
         }
       }
     }
@@ -130,12 +462,34 @@
     "scoreBlock": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["composite", "weighted_base", "surcharge", "avg_confidence"],
+      "required": [
+        "composite",
+        "weighted_base",
+        "surcharge",
+        "avg_confidence"
+      ],
       "properties": {
-        "composite": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Final score 0 best .. 100 worst (weighted_base + surcharge, capped)." },
-        "weighted_base": { "type": "integer", "minimum": 0, "maximum": 100 },
-        "surcharge": { "type": "integer", "minimum": 0, "maximum": 100 },
-        "avg_confidence": { "type": "number", "minimum": 0, "maximum": 3 }
+        "composite": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Final score 0 best .. 100 worst (weighted_base + surcharge, capped)."
+        },
+        "weighted_base": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "surcharge": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "avg_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3
+        }
       }
     }
   }
