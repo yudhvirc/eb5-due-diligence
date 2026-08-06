@@ -46,6 +46,35 @@ PROB_TEXT = {"P0": "remote (<5%)", "P1": "unlikely (5-20%)", "P2": "realistic (2
 SEV_TEXT = {"S1": "minor", "S2": "moderate", "S3": "severe", "S4": "green-card fatal / total loss"}
 LINK = 'color:#4ea1ff;text-decoration:underline'
 
+# Colour semantics (see skills/eb5-report/SKILL.md -> "Colour coding"):
+# colour encodes ABSOLUTE quality; being the best of a set never earns a quality colour.
+VERDICT_RE = re.compile(r"\b(NO-GO|CONDITIONAL|GO)\b")
+SCORE_RE = re.compile(r"\b(\d{1,3})\s*/\s*100\b")
+RANK_MARK = ";box-shadow:inset 3px 0 0 var(--accent)"
+
+
+def band_var(n):
+    """Risk-score band colour. 0 is best, 100 is worst; thresholds 35 / 60 per the rubric."""
+    return "var(--go)" if n <= 35 else ("var(--cond)" if n <= 60 else "var(--nogo)")
+
+
+def cell_style(text, good):
+    """Style a one-pager cell.
+
+    A verdict or an N/100 risk score is coloured by its OWN value and never by `good` --
+    otherwise a NO-GO that is merely the least-bad column renders green and reads as a pass.
+    `good` on such a cell adds a neutral accent rank marker instead. Elsewhere `good` means
+    the value is genuinely favourable in absolute terms, and earns green.
+    """
+    t = text or ""
+    m = VERDICT_RE.search(t)
+    if m:
+        return "color:%s;font-weight:700" % VERDICT_VAR[m.group(1)] + (RANK_MARK if good else "")
+    m = SCORE_RE.search(t)
+    if m:
+        return "color:%s;font-weight:700" % band_var(int(m.group(1))) + (RANK_MARK if good else "")
+    return "color:var(--go);font-weight:700" if good else ""
+
 PASSES = ["heatmap", "srcdocs", "location", "keysources", "timeline",
           "disposition", "onepager", "questions", "jargon"]
 
@@ -393,7 +422,7 @@ def pass_onepager(h, findings, _):
             v = (row.get("values") or {}).get(n) or {}
             if isinstance(v, str):
                 v = {"text": v}
-            style = "color:var(--go);font-weight:700" if v.get("good") else ""
+            style = cell_style(v.get("text", ""), v.get("good"))
             link = ('<br><a href="%s" target="_blank" rel="noopener" style="%s">source &#8599;</a>'
                     % (esc(v["link"]), LINK)) if v.get("link") else ""
             cells.append('<td style="%s">%s%s</td>' % (style, esc(v.get("text", "-")), link))
@@ -407,10 +436,17 @@ def pass_onepager(h, findings, _):
                   % "".join("<li>%s</li>" % esc(b) for b in op["bottom_line"]))
         if op.get("closing"):
             bottom += '<p class="sub">%s</p>' % esc(op["closing"])
-    inner = ("<h2 style=\"margin-top:0\">One-page summary</h2>"
-             '<p class="sub">Ordered <strong>immigration-first</strong> &mdash; lowest green-card risk on the '
-             "left, because de-risking the visa is the primary objective and protecting the capital comes "
-             "second.</p>"
+    key = ('<p class="sub" style="margin:6px 0 10px">Ordered <strong>immigration-first</strong> &mdash; lowest '
+           "green-card risk on the left, because de-risking the visa is the primary objective and protecting "
+           "the capital comes second.<br><strong>Reading the colours:</strong> "
+           '<span style="color:var(--go);font-weight:700">green</span> = genuinely good, '
+           '<span style="color:var(--cond);font-weight:700">amber</span> = caution, '
+           '<span style="color:var(--nogo);font-weight:700">red</span> = bad. Colour always describes the '
+           "value itself, never how it compares with the other column &mdash; so a NO-GO stays red even where "
+           "it is the better of the two. A thin blue bar marks the better value in a row, and a blue outline "
+           "does the same in the matrix below; blue means <em>best of this set</em>, which is not the same as "
+           "good.</p>")
+    inner = ("<h2 style=\"margin-top:0\">One-page summary</h2>" + key +
              "<table><thead><tr><th>&nbsp;</th>%s</tr></thead><tbody>%s</tbody></table>%s"
              % (head, "".join(rows), bottom))
     block = marker("onepager") + panel(inner, border="var(--cond)")

@@ -230,6 +230,29 @@ questions/footer is inserted before `<footer>`.
 introduced by the new panels get icons too. `enhance_report.py` enforces this regardless of `--only`
 order.
 
+## Colour coding (non-negotiable)
+
+**Colour encodes absolute quality. Being the best of a set never earns a quality colour.**
+
+A comparison always has a leftmost column, and in a bad field that column is still bad. If "best in
+row" is painted green, a NO-GO that happens to be the least-bad option reads as a pass — which is the
+single most misleading thing this report could do.
+
+- **Green (`--go`)** — genuinely good in absolute terms. **Amber (`--cond`)** — caution. **Red
+  (`--nogo`)** — bad. Risk scores band at **≤35 / 36–60 / >60**, matching the verdict matrix.
+- **Rank is blue** (`--accent`), never green: a thin inset bar on the better one-pager cell, and the
+  `.best` outline in the summary matrix. Blue means *best of this set*, which is not the same as good.
+- `enhance_report.py` enforces this mechanically for the two cases it can detect: a cell containing a
+  **verdict** (GO / CONDITIONAL / NO-GO) or an **`N/100` risk score** is coloured from its own value and
+  ignores `good` for colour, taking the rank marker instead.
+- For every other cell, `good: true` is the author's assertion that the value **is genuinely
+  favourable**, not merely better than the other column. Do not set it on a mixed or partly-negative
+  cell — "3 of 4 sites verified, the fourth fails" is not a green cell.
+- Every colour already carried by the renderer is absolute and must stay that way: verdict chips, the
+  heatmap `ScoreColor` ramp, gauge bars, severity dots, and the disposition chips (ACCEPT green /
+  CAUTION amber / MITIGATE orange / AVOID red).
+- The one-pager carries a visible **colour key** stating all of this, so the reader never has to infer it.
+
 ## Checking the output
 After enhancing, verify (the script's own summary line reports which passes applied — a pass that
 silently no-ops usually means the JSON block it reads is missing):
