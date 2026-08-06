@@ -137,8 +137,12 @@ questions/footer is inserted before `<footer>`.
    question stays scannable but the rationale is one glance away. Append the **shareable source link(s)
    inline** next to the specific question each one backs, styled **blue and underlined**
    (`color:#4ea1ff;text-decoration:underline`) so they read clearly as links.
-4. **Heatmap legend + tooltips** — add `title="<factor name>"` to each I1–F10 header cell and a visible
-   "What the columns mean" legend mapping every code to its factor name (I = immigration, F = financial).
+4. **Heatmap legend + tooltips** — a visible "What the columns mean" legend mapping every code to its factor
+   name and its plain-language "why it matters" line (I = immigration, F = financial), **and the same full text
+   as a `title` tooltip on both the I1–F10 header cells and every data cell**. The tooltip must carry the whole
+   legend entry — code, factor name and the why-it-matters line — not just the name, so a reader hovering a
+   number gets the explanation without hunting for the legend. Use `&#10;` for line breaks inside the attribute.
+   Both the names and the why-lines come from `assets/report-factors.json`; do not retype them.
 5. **Source links in the verdict-colored areas** — wherever a verdict is shown in yellow (CONDITIONAL)
    or red (NO-GO), surface that project's shareable source links right there (not only in the bottom
    sources ledger), using the same **blue/underlined ↗** style and drawing from each project's tier-≥2
