@@ -29,14 +29,18 @@ Follow the orchestrator pipeline in `skills/eb5-due-diligence/SKILL.md`:
    the **JCE's recorded parcel** (never the marketing address), price the **full lawful grouping
    universe** on the **filing-vintage ACS**, and produce the green-card **timeline** block.
 7. **Render** — write `findings.json` and run `scripts/render_report.ps1` to produce
-   `<project>-eb5-report.html` **(both inside today's `eb5-run-YYYYMMDD` folder)**, then apply the **post-render enhancements** from
-   `skills/eb5-report/SKILL.md`: a **"Source documents (locally provided)"** block listing the exact
-   filenames you read (or "none received"), and a pointed **owner-facing "Questions to ask in your 1:1"**
-   section built from the report's data gaps, with **inline blue/underlined shareable source links** and,
-   under **every** question, a plain-language **"What this means"** / **"Why it matters"** sub-line
-   (assume a non-expert reader; define EB-5 jargon). Also required: **disposition chips** on the red flags
-   plus the **"What you can live with"** panel (must-clear / acceptable-as-is / cannot-resolve-in-time),
-   and — for a high-unemployment project — the **green-card timeline panel**.
+   `<project>-eb5-report.html` **(both inside today's `eb5-run-YYYYMMDD` folder)**, then apply the
+   house format with the **bundled** enhancer — do not hand-write a per-run script:
+   ```
+   python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html "$run/<project>-eb5-report.html" --findings $run/findings.json
+   ```
+   It is data-driven and idempotent, so put the content in `findings.json`: `project.source_documents`
+   (the exact filenames you read, or `[]`), `project.location`, the calibration fields on each red flag,
+   `decision_summary`, `timeline` (high-unemployment projects), and `questions` — each question carrying
+   a plain-language **"What this means"** (`means`) and **"Why it matters"** (`matters`) line written for
+   a non-expert, plus a `source_index` for an inline blue/underlined link. Omit `questions` and they are
+   generated from `data_gaps`. Add any new jargon to `assets/report-glossary.json`. Then run the output
+   checks in `skills/eb5-report/SKILL.md`.
 
 If documents are provided via `--ppm <file-or-folder>`, read **every** file first (extract text with
 `pdftotext -layout`; the Read tool's PDF path needs `pdftoppm`, often missing on Windows) and record the

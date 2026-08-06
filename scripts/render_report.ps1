@@ -145,9 +145,19 @@ function Render-Body($f, [bool]$embedded){
       @('G5','No confirmed material misrepresentation'))
     $trig = @($f.verdict.hard_gates_triggered)
     foreach($g in $gates){
-      $failed = $trig -contains $g[0]
+      # Match on the gate ID at the start of the entry, not the whole string: entries are
+      # normally written descriptively ("G4 - proven set-aside misqualification: ..."), and an
+      # exact -contains silently rendered every gate as PASS on a gated NO-GO report.
+      $hit = @($trig | Where-Object { "$_".Trim() -match "^$($g[0])\b" })
+      $failed = $hit.Count -gt 0
       $cls = if($failed){'fail'}else{'pass'}; $mk = if($failed){'&#10007;'}else{'&#10003;'}
-      [void]$sb.Append("<div class=`"gate $cls`"><span class=`"mark`">$mk</span><span>$(Esc $g[1])</span></div>")
+      $why = ''
+      if ($failed){
+        # Surface the reason inline; strip the redundant leading "G4 - " / "G4: " prefix.
+        $d = ("$($hit[0])".Trim() -replace "^$($g[0])\s*[-:—]?\s*", '')
+        if ($d){ $why = "<div class=`"sub`" style=`"margin-top:3px`">$(Esc $d)</div>" }
+      }
+      [void]$sb.Append("<div class=`"gate $cls`"><span class=`"mark`">$mk</span><span>$(Esc $g[1])$why</span></div>")
     }
     [void]$sb.Append("</div>")
   }

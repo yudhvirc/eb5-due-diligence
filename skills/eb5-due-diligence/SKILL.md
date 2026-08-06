@@ -142,13 +142,17 @@ risk (after obtainable mitigations) alongside the raw immigration-first ranking 
    `${CLAUDE_PLUGIN_ROOT}/schemas/findings.schema.json`; include `generated_at`).
 2. Render:
    `pwsh ${CLAUDE_PLUGIN_ROOT}/scripts/render_report.ps1 -Findings $run/findings.json -Out "$run/<project>-eb5-report.html"`
-3. Apply the **post-render enhancements** from `../eb5-report/SKILL.md`: a per-section **"Source
-   documents (locally provided)"** block (from `project.source_documents`, or "none received"), and a
-   pointed **owner-facing "Questions to ask in your 1:1"** section built from `data_gaps`, with **inline
-   blue/underlined shareable source links**. Also required: the **disposition chips + "What you can live
-   with" panel** (enhancement 9) on every run, and for a high-unemployment project the **green-card
-   timeline panel** (enhancement 8). (Comparisons additionally get the one-page summary and the heatmap
-   legend/tooltips — see `commands/eb5-compare.md`.)
+3. Apply the **post-render enhancements** — the house format ships with the plugin, so **run the
+   bundled script rather than writing a per-run enhancer**:
+   `python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html "$run/<project>-eb5-report.html" --findings $run/findings.json`
+   It applies all nine passes (source-documents block, location bar, key-sources panel, heatmap legend
+   and tooltips, green-card timeline panel, disposition chips + "What you can live with", one-pager,
+   1:1 questions, inline jargon icons) idempotently, from the JSON. So **put the content in
+   `findings.json`** — `project.source_documents`, `project.location`, the calibration fields on each
+   red flag, `decision_summary`, `timeline`, and optionally `questions` / `one_pager` (comparisons) —
+   and add any new term to `assets/report-glossary.json`. Only extend the script itself if the format
+   genuinely needs a pass it does not have; see `../eb5-report/SKILL.md` for the spec and the
+   output checks.
 4. Tell the user the output path and give a 3-line summary (verdict + the two scores + top red flag).
    Do **not** restate the whole report in chat.
 

@@ -32,8 +32,22 @@ The comparison report shows a summary matrix (best value per column highlighted,
 column so a project does not "win" merely by being less verified), a 19-factor heatmap, and each full
 project report as a collapsible accordion.
 
-**Then apply the post-render enhancements** (see `skills/eb5-report/SKILL.md` → "Post-render
-enhancements"). For a comparison, always add: (1) a **"Source documents (locally provided)"** block at
+**Then apply the house format with the bundled enhancer** — do not write a per-run enhancement script:
+
+```
+python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html $run/eb5-compare.html --findings $run/proj1.json,$run/proj2.json[,...]
+```
+
+Pass the findings in the **same order** as `render_report.ps1`, which for a comparison means
+**immigration-first**. It is data-driven and idempotent, so the editorial content goes in the JSON:
+`project.source_documents`, `project.location`, red-flag calibration fields, `decision_summary`,
+`timeline`, `questions`, and — on the **first** findings file — the `one_pager` block (`order`, `rows`
+with per-project `{text, good, link}` values and full-width `note` rows, `bottom_line` bullets,
+`closing`). New jargon goes in `assets/report-glossary.json`. Run the output checks in
+`skills/eb5-report/SKILL.md` afterwards.
+
+The passes below are what it produces (see `skills/eb5-report/SKILL.md` → "Post-render
+enhancements" for the full spec). For a comparison that means: (1) a **"Source documents (locally provided)"** block at
 the top of each project's section plus a "Documents reviewed" row in the one-pager; (2) a **one-page
 summary** of the viable (GO/CONDITIONAL) deals at the very top, **ordered immigration-first** (best
 immigration risk leftmost; render the findings in that order so the matrix, heatmap and accordions match); (3) an **owner-facing "Questions to ask

@@ -67,6 +67,49 @@
             "type": "string"
           },
           "description": "e.g. ['ppm','website','name','rc_data.json']"
+        },
+        "source_documents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Exact filenames of locally-provided offering documents that were read. [] if none received. Surfaced per-section by scripts/enhance_report.py."
+        },
+        "location": {
+          "description": "Physical project location - load-bearing, it drives the RC-state and TEA checks. A string, or an object with any of address/street/city/county/state.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "county": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "raise_amount": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Total EB-5 raise for the project (amount_usd is the per-investor subscription)."
         }
       }
     },
@@ -454,6 +497,107 @@
         },
         "notes": {
           "type": "string"
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "description": "Owner-facing 1:1 questions. If omitted, enhance_report.py generates them from data_gaps.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "q"
+        ],
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The question, phrased to be asked out loud."
+          },
+          "means": {
+            "type": "string",
+            "description": "'What this means' - restate in everyday language."
+          },
+          "matters": {
+            "type": "string",
+            "description": "'Why it matters' - what is at stake, and what an evasive answer tells you."
+          },
+          "source_index": {
+            "type": "integer",
+            "description": "1-based index into sources[]; rendered as an inline link."
+          }
+        }
+      }
+    },
+    "one_pager": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Comparison one-page summary. Put it on the FIRST findings file; ignored for single-project reports.",
+      "properties": {
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Project names, immigration-first (lowest immigration risk leftmost). Must match the -Findings order given to render_report.ps1."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "values": {
+                "type": "object",
+                "description": "Project name -> {text, good?, link?} (or a bare string).",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "good": {
+                          "type": "boolean",
+                          "description": "Best-in-row; rendered green."
+                        },
+                        "link": {
+                          "type": "string",
+                          "description": "Shareable source URL, rendered inline blue/underlined."
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "note": {
+                "type": "string",
+                "description": "Full-width plain-English note row beneath this one. Use it for the TEA explanation - say 'hand-picked blocks', never 'gerrymandered'."
+              }
+            }
+          }
+        },
+        "bottom_line": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "One bullet per deal - never a dense paragraph."
+        },
+        "closing": {
+          "type": "string",
+          "description": "One-line closing caution."
         }
       }
     }

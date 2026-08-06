@@ -164,7 +164,19 @@ resolved once and reused. The bundled `rc_data.json` snapshot is never modified.
    investors choosing among live deals on a deadline: an irreducible six-check verification
    set, an explicit "these must not delay your decision" list, and a **residual-risk**
    ranking alongside the raw one.
-7. **Render** — `render_report.ps1` turns the findings JSON into the HTML report.
+7. **Render** — `render_report.ps1` turns the findings JSON into the HTML report skeleton,
+   then `enhance_report.py` layers on the house format: the source-documents block,
+   location bar, key-sources panel, heatmap legend with per-factor "why it matters"
+   lines, the green-card timeline panel (high-unemployment projects), disposition chips
+   and the "What you can live with" panel, the comparison one-pager, the owner-facing
+   1:1 questions, and inline **tap-for-a-definition** jargon icons on ~90 EB-5 terms.
+   Every pass is data-driven and idempotent — the wording lives in `findings.json` and
+   in `assets/report-glossary.json` / `assets/report-factors.json`, not in per-run code.
+
+```bash
+pwsh scripts/render_report.ps1 -Findings findings.json -Out report.html
+python scripts/enhance_report.py --html report.html --findings findings.json
+```
 
 See `skills/eb5-due-diligence/SKILL.md` for the full orchestration spec,
 `skills/eb5-scoring/SKILL.md` for the scoring methodology,

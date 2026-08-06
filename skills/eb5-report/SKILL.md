@@ -69,9 +69,32 @@ verification on their own (the core rule still holds: independently verify every
   project it belongs to.
 
 ## Post-render enhancements (apply after render_report.ps1)
-`render_report.ps1` is deterministic and does **not** emit these; apply them as a post-render
-augmentation (a small Python/PowerShell string-injection pass over the produced HTML). Keep each pass
-idempotent. The anchors are stable: per-project accordions are `<details class="acc">` whose body opens
+
+**Do not hand-write these — the plugin ships them.** `render_report.ps1` emits the deterministic
+skeleton; `${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py` layers on the house format:
+
+```
+python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html $run/<project>-eb5-report.html --findings $run/findings.json
+python ${CLAUDE_PLUGIN_ROOT}/scripts/enhance_report.py --html $run/eb5-compare.html --findings $run/proj1.json,$run/proj2.json,$run/proj3.json
+```
+
+Pass the findings files in the **same order** given to `render_report.ps1`. Every pass is **idempotent**
+(each writes an HTML comment marker and is skipped if already present), so re-running over an
+already-enhanced file is safe. `--only` / `--skip` take a comma-separated pass list:
+`heatmap, srcdocs, location, keysources, timeline, disposition, onepager, questions, jargon`. `jargon`
+is always forced last so terms introduced by the other passes get icons too.
+
+**The content is data, not code.** Each pass reads `findings.json` plus two bundled assets —
+`assets/report-factors.json` (the 19 factor names + their plain-language "why it matters" lines) and
+`assets/report-glossary.json` (jargon surface form → one-sentence definition). To change what a report
+*says*, write better JSON or add a glossary term; do not fork the script per run. The optional
+`one_pager`, `questions`, `timeline` and `decision_summary` blocks in the schema exist precisely so the
+per-run editorial content is data.
+
+Everything below is the **specification** those passes implement — read it to know what the JSON must
+contain, and consult it if a report needs something the script does not yet cover. If you do extend the
+format, add the pass to the script rather than writing a one-off enhancer, so the next run inherits it.
+The anchors are stable: per-project accordions are `<details class="acc">` whose body opens
 `<div class="body">`; the comparison heatmap header cells are `<th class="num">I1</th>` … `F10`; the
 questions/footer is inserted before `<footer>`.
 
@@ -204,7 +227,19 @@ questions/footer is inserted before `<footer>`.
      of why they differ.
 
 **Ordering:** enhancement 7 (inline jargon icons) always runs **last**, after 8 and 9, so the terms
-introduced by the new panels get icons too.
+introduced by the new panels get icons too. `enhance_report.py` enforces this regardless of `--only`
+order.
+
+## Checking the output
+After enhancing, verify (the script's own summary line reports which passes applied — a pass that
+silently no-ops usually means the JSON block it reads is missing):
+- **Tag balance** — `<div>`/`<span>`/`<details>`/`<table>` open and close counts match.
+- **The `<style>` block is untouched** — no `<span class="jt">` before the first `</style>`. A jargon
+  pass that leaked into the CSS corrupts the whole report.
+- **No `<button>` inside an `<a>`** — nested interactive elements are invalid and create two competing
+  click targets.
+- **Each term wrapped once** — a term should appear with an icon on its first occurrence only.
+- **Re-running changes nothing** — the byte count after a second run must be identical.
 
 ## Notes
 - The HTML is fully self-contained (inline CSS/JS, no CDN) so it can be emailed or archived.

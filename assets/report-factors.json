@@ -1,0 +1,81 @@
+{
+ "$note": "Display name and plain-language 'why it matters' line for each of the 19 rubric factors. Used for the heatmap header tooltips and the 'What the columns mean' legend (see skills/eb5-report/SKILL.md enhancement 4). Weights and scoring live in scoring-rubric.json.",
+ "factors": {
+  "I1": {
+   "name": "Regional Center good standing",
+   "why": "If the regional center is terminated or not approved for the project's state, every investor petition behind it is exposed."
+  },
+  "I2": {
+   "name": "I-956F project approval",
+   "why": "The I-956F is the project's own approval. Until the regional center FILES it, no investor can even submit an I-526E."
+  },
+  "I3": {
+   "name": "Job creation",
+   "why": "Fewer than 10 countable jobs per investor means the green card fails at I-829, however well the building performs."
+  },
+  "I4": {
+   "name": "TEA / set-aside validity",
+   "why": "The set-aside is what buys the $800K price and the shorter queue. Rural is pure geography, so it can be checked independently."
+  },
+  "I5": {
+   "name": "Sustainment (2-year at-risk)",
+   "why": "Capital must stay genuinely at risk for two years. If the loan repays too early, the petition is undermined."
+  },
+  "I6": {
+   "name": "Redeployment",
+   "why": "If money comes back before I-829, it must be redeployed. Undisclosed terms mean the sponsor decides alone."
+  },
+  "I7": {
+   "name": "Approval track record",
+   "why": "A sponsor that has actually carried investors through I-829 is evidence the process works end to end."
+  },
+  "I8": {
+   "name": "Fund admin / audits / securities",
+   "why": "A fund administrator or annual audit is what stops investor money being moved without oversight."
+  },
+  "I9": {
+   "name": "Source-of-funds integrity",
+   "why": "A weak source-of-funds record is the most common reason an otherwise sound petition is denied."
+  },
+  "F1": {
+   "name": "Capital-stack position & EB-5 %",
+   "why": "Where EB-5 sits in the stack decides who absorbs the first loss. Senior over real equity is very different from senior over nothing."
+  },
+  "F2": {
+   "name": "Loan vs equity & terms",
+   "why": "A secured loan with a defined maturity is materially safer for the investor than open-ended equity."
+  },
+  "F3": {
+   "name": "Collateral & guarantees",
+   "why": "A guaranty smaller than the loan, or one that only guarantees completion rather than repayment, may not return the money."
+  },
+  "F4": {
+   "name": "Developer balance sheet & litigation",
+   "why": "If the developer is insolvent, the building may finish but the loan may never be repaid."
+  },
+  "F5": {
+   "name": "Construction / completion risk",
+   "why": "Unentitled or unpermitted projects can stall for years, which stops both the jobs and the repayment."
+  },
+  "F6": {
+   "name": "Market / demand risk",
+   "why": "Weak demand shows up as low occupancy or slow sales, which is what actually breaks the refinance."
+  },
+  "F7": {
+   "name": "Repayment / takeout source",
+   "why": "Every EB-5 loan needs something to repay it. No committed takeout means repayment is a hope, not a plan."
+  },
+  "F8": {
+   "name": "Escrow & redeployment (financial)",
+   "why": "Escrow decides whether your money is released before or after the approvals you are relying on."
+  },
+  "F9": {
+   "name": "Fees & conflicts",
+   "why": "Fees paid outside the offering do not appear in the headline $800,000 and directly reduce your net return."
+  },
+  "F10": {
+   "name": "Return-of-capital history",
+   "why": "A sponsor that has actually returned capital before is the best available evidence you will get yours back."
+  }
+ }
+}
