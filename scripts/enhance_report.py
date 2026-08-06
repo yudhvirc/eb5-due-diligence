@@ -174,16 +174,44 @@ def insertion_points(h, findings):
 # ----------------------------------------------------------------------------- passes
 
 def pass_heatmap(h, findings, _):
-    """Heatmap header tooltips + a 'What the columns mean' legend with amber why-lines."""
+    """Heatmap tooltips + a 'What the columns mean' legend with amber why-lines.
+
+    The tooltip carries the SAME full text as the legend -- code, factor name and the
+    "why it matters" line -- on both the column headers and every data cell, so a reader
+    hovering a number gets the explanation without scrolling to find the legend.
+    """
     fac = load_asset("report-factors.json")["factors"]
 
-    def add_title(m):
-        fid = m.group(1)
-        if fid not in fac:
-            return m.group(0)
-        return '<th class="num" title="%s">%s</th>' % (esc(fac[fid]["name"]), fid)
+    def tip(fid):
+        """Multi-line title text. &#10; is a newline inside an attribute value."""
+        return "%s &mdash; %s&#10;&#10;Why it matters: %s" % (
+            fid, esc(fac[fid]["name"]), esc(fac[fid]["why"]))
 
-    h = re.sub(r'<th class="num">(' + "|".join(FACTOR_IDS) + r')</th>', add_title, h)
+    # column headers
+    def add_th(m):
+        fid = m.group(1)
+        return m.group(0) if fid not in fac else '<th class="num" title="%s">%s</th>' % (tip(fid), fid)
+
+    h = re.sub(r'<th class="num">(' + "|".join(FACTOR_IDS) + r')</th>', add_th, h)
+
+    # Data cells. Match by COLUMN POSITION, not by factor name: findings files word the
+    # names slightly differently from the asset ("...securities" vs "...securities
+    # compliance") and any name-based join silently drops those columns. The renderer
+    # emits the cells in FACTOR_IDS order, so position is exact. Strip-and-replace keeps
+    # this idempotent.
+    def fix_heat(tm):
+        def fix_row(rm):
+            row, idx = rm.group(0), [0]
+            def one(cm):
+                i = idx[0]; idx[0] += 1
+                if i >= len(FACTOR_IDS) or FACTOR_IDS[i] not in fac:
+                    return cm.group(0)
+                tag = re.sub(r'\s+title="[^"]*"', "", cm.group(0))
+                return tag[:-1] + ' title="%s">' % tip(FACTOR_IDS[i])
+            return re.sub(r'<td class="cell"[^>]*>', one, row)
+        return re.sub(r"<tr>.*?</tr>", fix_row, tm.group(0), flags=re.S)
+
+    h = re.sub(r'<table class="heat">.*?</table>', fix_heat, h, flags=re.S)
 
     if marker("heatmap") in h:
         return h
